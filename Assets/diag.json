@@ -1,0 +1,289 @@
+{
+  "dialogues": [
+    {
+    	"id" : 0,
+    	"faction": "Red",
+    	"dialogueId" : 0,
+    	"text" : "Goodbye",
+    	"responses":[]
+    },
+    {
+      "id": 1,
+      "faction": "Red",
+      "dialogueId": 1,
+      "text": "Welcome, I am the leader of the RED faction",
+      "responses": [
+        {
+          "id": 1,
+          "text": "Nice to meet you.",
+          "nextDialogue": 2
+        },
+        {
+          "id": 2,
+          "text": "So?",
+          "nextDialogue": 3
+        }
+      ]
+    },
+    
+    {
+      "id": 2,
+      "faction": "Red",
+      "dialogueId": 2,
+      "text": "I like you, have some gold.",
+      "responses": [
+        {
+          "id": 1,
+          "text": "Thank you",
+          "nextDialogue": 5
+        },
+        {
+          "id": 2,
+          "text": "Is that all?",
+          "nextDialogue": 3
+        }
+      ]
+    },
+
+    {
+        "id" : 3,
+        "faction" : "Red",
+        "dialogueId" : 3,
+        "text" : "You are very rude,",
+        "responses":[
+            {
+                "id" : 1,
+                "text": "I am sorry",
+                "nextDialogue": 4
+            },
+            {
+                "id" : 2,
+                "text" : "Fuck you",
+                "nextDialogue" : 0
+            }
+        ]
+    },
+    
+    {
+    	
+    	"id": 4,
+    	"faction": "Red",
+    	"dialogueId" : 4,
+    	"text" : "Hmmm, perhaps next time you won't be so rude",
+    	"nextDialogue": 0, 
+    	"responses" : [
+	    {
+		"id" : 1,
+		"text" : "Bye",
+		"nextDialogue" : 0	
+	    }
+	]
+    },
+    
+    {
+    	"id": 5,
+    	"faction": "Red",
+    	"dialogueId": 5,
+    	"text": "I hope to meet you again soon",
+    	"nextDialogue": 0,
+    	"responses": [{
+		
+		"id" : 1, 
+		"text" : "Bye", 
+		"nextDialogue" : 0
+	}]
+    },
+    {
+
+    
+        "id" : 1,
+        "faction": "Blue",
+        "dialogueId" : 1,
+        "text": "Hello, I am leader of the BLUE clan",
+        "nextDialogue" : 2,
+        "responses": [
+            {
+                "id" : 1,
+                "text": "Hello",
+                "nextDialogue": 0 
+            }
+        ]
+    },
+    {
+
+        "id" : 1,
+        "faction": "Yellow",
+        "dialogueId" : 1,
+        "text": "Hi, I'm the YELLOW leader",
+        "nextDialogue" : 2,
+        "responses": [
+            {
+                "id" : 1,
+                "text": "Hey there",
+                "nextDialogue": 0 
+            }
+        ]
+    },
+    {
+
+        "id" : 1,
+        "faction": "Purple",
+        "dialogueId" : 1,
+        "text": "Huh? I'm the leader of the PURPLE faction, get out of my way",
+        "nextDialogue" : 2,
+        "responses": [
+            {
+                "id" : 1,
+                "text": "Right...",
+                "nextDialogue": 0 
+            }
+        ]
+    },
+    {
+
+
+        "id" : 1,
+        "faction": "Orange",
+        "dialogueId" : 1,
+        "text": "ORANGE tribe stronk",
+        "nextDialogue" : 2,
+        "responses": [
+            {
+                "id" : 1,
+                "text": "...Okay",
+                "nextDialogue": 0 
+            }
+        ]
+    },
+    {
+
+        "id" : 1,
+        "faction": "Green",
+        "dialogueId" : 1,
+        "text": "I am the GREEN leader",
+        "nextDialogue" : 2,
+        "responses": [
+            {
+                "id" : 1,
+                "text": "okay",
+                "nextDialogue": 0 
+            }
+        ]
+    },
+    {
+    	"id" : 1, 
+	"faction": "White",
+	"dialogueId": 1,
+	"text": "Welcome to the afterlife. I will need to keep this brief. We are one with the light, We are in an ever present battle with the corrupted forces of Darkness.",
+	"nextDialogue": 2,
+	"responses":[
+	{
+		"id": 1,
+		"text": "Go on...",
+		"nextDialogue": 2
+	}
+	]
+    },
+    {
+	    "id": 2,
+	    "faction": "White",
+	    "dialogueId": 2,
+	    "text": "When you died, a Dark being split your soul into 7 pieces. You're going to want to get those back.",
+	    "nextDialogue": 3,
+	    "responses":[
+		{
+			"id": 1,
+			"text": "Hmmm...",
+			"nextDialogue": 3
+		    
+		}
+	    ]
+    },
+    {
+    
+		"id": 3,
+	"faction": "White",
+	"dialogueId": 3,
+	"text": "I can send you to a dimension that will allow you to recollect your tattered chakras, although it may take some time. The beings here are all aligned with different factions, each one is assigned a colour of what you would call rainbows.",
+	"nextDialogue": 4,
+	"responses":[
+		{
+			"id": 1,
+			"text": "I completely understand.",
+			"nextDialogue": 4
+		},
+		{
+			"id": 2,
+			"text": "What are you talking about?",
+			"nextDialogue": 5
+		}
+	]
+    },
+    {
+	    "id": 4,
+	    "faction": "White",
+	    "dialogueId": 4,
+	    "text": "Excellent.\nStart with the base chakra, or red in your language. You may follow a positive or negative path with entities of a red chakra. There is no right or wrong in death so align with those who resonate with you.",
+	    "nextDialogue": 6,
+	    "responses":[{
+	    
+	    	"id": 1,
+		"text": "So I need to interact with entities from the red faction first?",
+		"nextDialogue": 6
+	    }
+	    ]
+    },
+    {
+	    "id": 5,
+	    "faction": "White",
+	    "dialogueId": 5,
+	    "text": "I know this is difficult to understand, with what you call time it will become clearer.\nStart with the base chakra, or red in your language. You may follow a positive or negative path with entities of a red chakra. There is no right or wrong in death so align with those who resonate with you.",
+	    "nextDialogue": 6,
+	     "responses":[{
+	    
+	    	"id": 1,
+		"text": "I still don't understand, but whatever.",
+		"nextDialogue": 6
+	     }
+	    ]
+
+    },
+    {
+	    "id": 6,
+	    "faction": "White",
+	    "dialogueId": 6,
+	    "text": "You may interact with any karmic entities you find however you wish. My connection to you is growing weak. I will find you when the time is right\nOne last word of warning. Beware the corruption and entities under this spell. This path will only lead to Darkness.",
+	    "nextDialogue": 0,
+	     "responses":[{
+	    
+	    	"id": 1,
+		"text": "Corruption?",
+		"nextDialogue": 0
+	     }
+	    ]
+
+    },
+    {
+	    "id": 10020120,
+	    "faction": "TEMPLATE",
+	    "dialogueId": 100123232323121,
+	    "text": "THIS IS A SAMPLE MAIN TEXT",
+	    "nextDialogue": 0,
+	     "responses":[
+		{
+	    
+	    		"id": 1,
+			"text": "RESPONSE 1",
+			"nextDialogue": 0
+	     	},
+	     	{
+		 
+	    		"id": 2,
+			"text": "RESPONSE 2",
+			"nextDialogue": 0
+	     	}
+	    ]
+    }
+  ]
+}
+

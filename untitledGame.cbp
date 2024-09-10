@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="untitledGame" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/untitledGame" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/untitledGame" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Assets" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Components" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Engine" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Entities" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Events" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Graphics" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Inputs" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Items" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/States" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Timer" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_image-2.8.1/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_mixer-2.6.3/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_ttf-2.20.2/x86_64-w64-mingw32/include/SDL2" />
+		</Compiler>
+		<Linker>
+			<Add option="-lSDL2main" />
+			<Add option="-lSDL2" />
+			<Add option="-lSDL_image" />
+			<Add option="-lSDL_ttf" />
+			<Add option="-lSDL_mixer" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2/lib" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_image-2.8.1/x86_64-w64-mingw32/lib" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_mixer-2.6.3/x86_64-w64-mingw32/lib" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_ttf-2.20.2/x86_64-w64-mingw32/lib" />
+		</Linker>
+		<Unit filename="Components/AttackComponent.cpp" />
+		<Unit filename="Components/AttackComponent.h" />
+		<Unit filename="Components/AttributeComponent.cpp" />
+		<Unit filename="Components/AttributeComponent.h" />
+		<Unit filename="Components/Component.cpp" />
+		<Unit filename="Components/Component.h" />
+		<Unit filename="Components/DialogueComponent.cpp" />
+		<Unit filename="Components/DialogueComponent.h" />
+		<Unit filename="Components/FactionComponent.cpp" />
+		<Unit filename="Components/FactionComponent.h" />
+		<Unit filename="Components/QuestComponent.cpp" />
+		<Unit filename="Components/QuestComponent.h" />
+		<Unit filename="Components/SkillComponent.cpp" />
+		<Unit filename="Components/SkillComponent.h" />
+		<Unit filename="Engine/Camera.cpp" />
+		<Unit filename="Engine/Camera.h" />
+		<Unit filename="Engine/Engine.cpp" />
+		<Unit filename="Engine/Engine.h" />
+		<Unit filename="Engine/LoadFiles.cpp" />
+		<Unit filename="Engine/LoadFiles.h" />
+		<Unit filename="Engine/Vector2D.h" />
+		<Unit filename="Engine/json.hpp" />
+		<Unit filename="Engine/stdafx.h" />
+		<Unit filename="Entities/Enemy.cpp" />
+		<Unit filename="Entities/Enemy.h" />
+		<Unit filename="Entities/Entity.cpp" />
+		<Unit filename="Entities/Entity.h" />
+		<Unit filename="Entities/NPC.cpp" />
+		<Unit filename="Entities/NPC.h" />
+		<Unit filename="Entities/Player.cpp" />
+		<Unit filename="Entities/Player.h" />
+		<Unit filename="Events/Event.cpp" />
+		<Unit filename="Events/Event.h" />
+		<Unit filename="Graphics/GUI.cpp" />
+		<Unit filename="Graphics/GUI.h" />
+		<Unit filename="Graphics/Texture.cpp" />
+		<Unit filename="Graphics/Texture.h" />
+		<Unit filename="Graphics/Tile.cpp" />
+		<Unit filename="Graphics/Tile.h" />
+		<Unit filename="Graphics/TileMap.cpp" />
+		<Unit filename="Graphics/TileMap.h" />
+		<Unit filename="Inputs/Input.cpp" />
+		<Unit filename="Inputs/Input.h" />
+		<Unit filename="Items/Armour.cpp" />
+		<Unit filename="Items/Armour.h" />
+		<Unit filename="Items/Inventory.cpp" />
+		<Unit filename="Items/Inventory.h" />
+		<Unit filename="Items/Item.cpp" />
+		<Unit filename="Items/Item.h" />
+		<Unit filename="Items/Key.cpp" />
+		<Unit filename="Items/Key.h" />
+		<Unit filename="Items/Resource.cpp" />
+		<Unit filename="Items/Resource.h" />
+		<Unit filename="Items/Weapon.cpp" />
+		<Unit filename="Items/Weapon.h" />
+		<Unit filename="States/Battle.cpp" />
+		<Unit filename="States/Battle.h" />
+		<Unit filename="States/CharacterCreator.cpp" />
+		<Unit filename="States/CharacterCreator.h" />
+		<Unit filename="States/CharacterMenu.cpp" />
+		<Unit filename="States/CharacterMenu.h" />
+		<Unit filename="States/Editor.cpp" />
+		<Unit filename="States/Editor.h" />
+		<Unit filename="States/FactionEncounter.cpp" />
+		<Unit filename="States/FactionEncounter.h" />
+		<Unit filename="States/FollowerMenu.cpp" />
+		<Unit filename="States/FollowerMenu.h" />
+		<Unit filename="States/Game.cpp" />
+		<Unit filename="States/Game.h" />
+		<Unit filename="States/GraphicRandomEncounter.cpp" />
+		<Unit filename="States/GraphicRandomEncounter.h" />
+		<Unit filename="States/IncreaseAttributes.cpp" />
+		<Unit filename="States/IncreaseAttributes.h" />
+		<Unit filename="States/LoadGame.cpp" />
+		<Unit filename="States/LoadGame.h" />
+		<Unit filename="States/MainMenu.cpp" />
+		<Unit filename="States/MainMenu.h" />
+		<Unit filename="States/PlayerDeath.cpp" />
+		<Unit filename="States/PlayerDeath.h" />
+		<Unit filename="States/RandomEncounter.cpp" />
+		<Unit filename="States/RandomEncounter.h" />
+		<Unit filename="States/Settings.cpp" />
+		<Unit filename="States/Settings.h" />
+		<Unit filename="States/State.cpp" />
+		<Unit filename="States/State.h" />
+		<Unit filename="Timer/Timer.cpp" />
+		<Unit filename="Timer/Timer.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
