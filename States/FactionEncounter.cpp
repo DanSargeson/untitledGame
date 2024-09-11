@@ -76,6 +76,8 @@ void FactionEncounter::update(const float& dt){
             textThread.join();
         }
     }
+
+    calcWorldTime();
 }
 
 void FactionEncounter::updateText(){
@@ -277,5 +279,6 @@ void FactionEncounter::render()
     }
 
     menu->render();
+    worldTimerText->render();
 }
 

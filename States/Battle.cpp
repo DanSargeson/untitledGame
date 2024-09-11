@@ -424,6 +424,8 @@ void Battle::update(const float& dt){
 //        return;
 //    }
 
+calcWorldTime();
+
 
 if(!endTurn){
 
@@ -1446,6 +1448,7 @@ void Battle::render(){
 
     getEnemyText()->render();
 
+    worldTimerText->render();
 
     if(playerWins){
 

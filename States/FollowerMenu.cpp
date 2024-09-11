@@ -220,6 +220,7 @@ void FollowerMenu::update(const float& dt){
     }
 
     backButton->update();
+    calcWorldTime();
 
     if(!getActiveCharacter()->getFollowers().empty()){
 
@@ -592,6 +593,8 @@ void FollowerMenu::render(){
         invSlotVec[i]->render();
     }
     }
+
+    worldTimerText->render();
 
     if(!invMenu2->getActive() && !menu->getActive() && getActiveCharacter()->getFollowers().size() <= 0){
 

@@ -33,6 +33,7 @@ void Emesh::update(const float& dt){
     getMainText()->setString(msg, true);
 
     mButtons["BACK"]->update();
+    calcWorldTime();
 }
 
 void Emesh::updateEvents(SDL_Event& e){
@@ -55,4 +56,6 @@ void Emesh::render(){
 
         button.second->renderButtons();
     }
+
+    worldTimerText->render();
 }

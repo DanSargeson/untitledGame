@@ -176,6 +176,8 @@ void CharacterMenu::update(const float& dt){
 
         button.second->update();
     }
+
+    calcWorldTime();
 }
 
 void CharacterMenu::craft(){
@@ -576,7 +578,7 @@ void CharacterMenu::render(){
 		i.second->renderButtons();
 	}
 
-
+    worldTimerText->render();
 
     backButton->renderButtons();
 }

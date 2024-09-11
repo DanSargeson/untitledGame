@@ -41,6 +41,7 @@ void Church::update(const float& dt){
     getMainText()->setString(msg, true);
 
     mButtons["BACK"]->update();
+    calcWorldTime();
 }
 
 void Church::updateEvents(SDL_Event& e){
@@ -63,4 +64,6 @@ void Church::render(){
 
         button.second->renderButtons();
     }
+
+    worldTimerText->render();
 }
