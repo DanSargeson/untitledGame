@@ -645,6 +645,8 @@ GUI::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	selector.h = static_cast<int>(gridSize);
 	selector.w = static_cast<int>(gridSize);
 
+    textureRect.x = 0;
+    textureRect.y = 0;
 	textureRect.h = static_cast<int>(gridSize);
 	textureRect.w = static_cast<int>(gridSize);
 
@@ -817,8 +819,8 @@ void GUI::Tooltip::update(){
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-	outline.x = x;
-	outline.y = y;
+	outline.x = x + 3;
+	outline.y = y + 3;
 
 	int w, h;
 	SDL_GetWindowSize(Engine::GetInstance()->GetWindow(), &w, &h);
@@ -827,6 +829,7 @@ void GUI::Tooltip::update(){
 
         outline.x -= outline.w;
 	}
+
 	if(outline.y + outline.h > h){
 
         outline.y -= outline.h;
@@ -836,10 +839,13 @@ void GUI::Tooltip::update(){
 
         outline.x = 1;
 	}
+
 	if(outline.y <= 0){
 
         outline.y = 1;
 	}
+
+	displayText->setPosition(outline.x + 5, outline.y + 5);
 }
 
 void GUI::Tooltip::render(){
