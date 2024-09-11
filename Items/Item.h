@@ -29,7 +29,8 @@ enum itemTypes {
 	ARMOUR,
 	RESOURCE,
 	POTION,
-	KEY
+	KEY,
+	CONSUMABLE
 };
 
 class Item{

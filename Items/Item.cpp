@@ -14,6 +14,7 @@
 //}
 
 Item::Item() {
+
 	this->itemType = -1;
 	this->name = "NONE";
 	this->level = 0;
