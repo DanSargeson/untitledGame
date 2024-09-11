@@ -1,12 +1,14 @@
 #include "GraphicRandomEncounter.h"
 #include "RandomEncounter.h"
 #include "Battle.h"
+#include "Church.h"
+#include "Sheol.h"
 
 GraphicRandomEncounter::GraphicRandomEncounter() : State(){
     //ctor
 
     unsigned int charSize = GUI::calcCharSize(125);
-    mButtons["BACK"] = std::make_shared<GUI::Button>(5.f, 5.f, 11.8f, 6.1f, charSize);
+    mButtons["BACK"] = std::make_shared<GUI::Button>(5.f, 93.f, 11.8f, 6.1f, charSize);
     mButtons["BACK"]->setRenderText("Back");
 
     for (auto button : mButtons) {
@@ -18,11 +20,11 @@ GraphicRandomEncounter::GraphicRandomEncounter() : State(){
     backButton->setActive(false);
 
     ///CHANGE HERE FOR TILES ///GRIDSIZE - THIS IS THE ONE
-    StateData::GetInstance()->gridSize = 42;
-    StateData::GetInstance()->gridSizeF = 42.f;
+    StateData::GetInstance()->gridSize = 64;
+    StateData::GetInstance()->gridSizeF = 64.f;
     this->mapTextureStr = "Assets/tilesBIG3.png";
-	int maxSize = 70;
-	StateData::GetInstance()->createCamera(maxSize);
+	int maxSize = 15;
+	StateData::GetInstance()->createCamera(2000); ///TODO: MAGIC NUMBER
 
 	tileInfo = std::make_shared<GUI::Tooltip>();
 	tileInfo->setHidden(false);
@@ -43,12 +45,13 @@ GraphicRandomEncounter::GraphicRandomEncounter() : State(){
                 this->tilemap->placeTreasure(6, roll);
             }
 
+            tilemap->LoadFromFile("MAP1");
 }
 
 GraphicRandomEncounter::~GraphicRandomEncounter(){
     //dtor
     backButton->setActive(true);
-    tilemap->clear();
+    //tilemap->clear();
     //tilemap.reset();
 }
 
@@ -97,7 +100,7 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
             }
     }
 
-    if(e.key.keysym.sym == SDLK_e && e.key.repeat == 0){
+    if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_E) && e.key.repeat == 0){
 
         tileInfo->setHidden(!tileInfo->getHidden());
 
@@ -123,21 +126,30 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
         int newX = StateData::GetInstance()->getCamera().x / StateData::GetInstance()->gridSize;
         int newY = StateData::GetInstance()->getCamera().y / StateData::GetInstance()->gridSize;
         newX += x;
-        newY += y;
 
+        newY += y;
         int type = tilemap->getTileType(newX, newY, 0);
 
 
         ///TODO: HERE IS WHERE YOU HAVE THE NUMBERS LOCKED (SO SHOULD BE SIMILAR FOR THE START OF THE GAME (NEED TO CHANGE IT IN TILEMAP AS WELL))
         ///TODO:: Bring the bellow back
         //if(type == 2 || type == 3 || type == 4){
-            if(type >= 2 && type <= 8){
-            Engine::GetInstance()->PopState();
-            Engine::GetInstance()->AddState(std::make_shared<RandomEncounter>(type));
+            if(type == 2){ ///PUB
+                int r = getRandomValue(2, 8);       ///TODO make a "getRandomFaction" function which checks for faction unlocks...
+            Engine::GetInstance()->AddState(std::make_shared<RandomEncounter>(r));
         }
+        else if(type == TILE::CHURCH_TILE){
+
+            Engine::GetInstance()->AddState(std::make_shared<Church>());
+        }
+        else if(type == TILE::SHEOL_TILE){
+
+            Engine::GetInstance()->AddState(std::make_shared<Sheol>());
+        }
+
         else if(type == 9){
 
-            Engine::GetInstance()->PopState();
+            //Engine::GetInstance()->PopState();
             Engine::GetInstance()->AddState(std::make_shared<Battle>());
         }
     }
@@ -170,6 +182,7 @@ void GraphicRandomEncounter::update(const float& dt)
     SDL_GetMouseState(&x, &y);
 
             ///CONTROLS THE MOUSE GRID THING???
+            int gr = StateData::GetInstance()->gridSize;
             x /= StateData::GetInstance()->gridSize;
             y /= StateData::GetInstance()->gridSize;
 
@@ -179,9 +192,19 @@ void GraphicRandomEncounter::update(const float& dt)
        newX += x;
        newY += y;
 
-       if(newX > tilemap->getMaxSizeGrid().x || newY > tilemap->getMaxSizeGrid().y){
+       if(newX >= tilemap->getMaxSizeGrid().x || newY >= tilemap->getMaxSizeGrid().y){
 
-        return;
+        if(!tileInfo->getHidden()){
+                int type = tilemap->getTileType(tilemap->getMaxSizeGrid().x, tilemap->getMaxSizeGrid().y, 0);
+                std::string msg = tilemap->getTileTypeStr(type);
+                if(msg == "Unknown tile string"){
+
+                    return;
+                }
+                tileInfo->update();
+                tileInfo->setDisplayText(msg);
+                tileInfo->update();
+            }
        }
        else{
 
@@ -189,20 +212,8 @@ void GraphicRandomEncounter::update(const float& dt)
                 int type = tilemap->getTileType(newX, newY, 0);
                 std::string msg = tilemap->getTileTypeStr(type);
                 tileInfo->setDisplayText(msg);
+                tileInfo->update();
             }
-            tileInfo->update();
-//        int type = tilemap->getTileType(newX, newY, 0);
-//
-//        if(type == -1){
-//
-//            tileInfo->setHidden(true);
-//        }
-//        else{
-//                tileInfo->setHidden(false);
-//            std::string msg = tilemap->getTileTypeStr(type);
-//            tileInfo->setDisplayText(msg);
-//            tileInfo->update();
-//        }
        }
 }
 
