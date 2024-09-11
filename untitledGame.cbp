@@ -125,6 +125,8 @@
 		<Unit filename="States/Church.h" />
 		<Unit filename="States/Editor.cpp" />
 		<Unit filename="States/Editor.h" />
+		<Unit filename="States/Emesh.cpp" />
+		<Unit filename="States/Emesh.h" />
 		<Unit filename="States/FactionEncounter.cpp" />
 		<Unit filename="States/FactionEncounter.h" />
 		<Unit filename="States/FollowerMenu.cpp" />

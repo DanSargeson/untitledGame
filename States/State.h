@@ -69,6 +69,7 @@ public:
     std::shared_ptr<GameTimer> followerTimer;
     std::shared_ptr<GameTimer> worldTimer;
     int daysPassed;
+    bool prevDay;
     int battleCounter;
 
      void runFollowerBattles();

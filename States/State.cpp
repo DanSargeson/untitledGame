@@ -45,7 +45,7 @@ State::State() {
     if(worldTimerText == nullptr){
 
         worldTimerText = std::make_shared<GUI::Text>();
-        worldTimerText->setPosition(GUI::p2pX(75), GUI::p2pY(2));
+        worldTimerText->setPosition(GUI::p2pX(65), GUI::p2pY(2));
     }
     this->quit = false;
     keyTimeMax = 0.5f;
@@ -268,7 +268,7 @@ void State::calcWorldTime(){
     float wt = getData()->worldTimer->getTicks() / 1000.f; // Current time in seconds
 
         // Convert to a day/night cycle (900 seconds = 15 minutes for a full 24-hour day)
-        getData()->dayCycle = 900.0f; // 900 seconds for a full cycle
+        getData()->dayCycle = 50.0f; // 900 seconds for a full cycle
         getData()->cycleTime = fmod(wt, getData()->dayCycle); // Time within the current cycle
 
         // Convert cycle time to a 24-hour format
@@ -290,8 +290,26 @@ void State::calcWorldTime(){
 
             n << "Night";
         }
+
+
+        if(static_cast<int>(getData()->hours) == 0 && getData()->minutes == 0){
+
+            if(!getData()->prevDay){
+
+                getData()->daysPassed++;
+                getData()->prevDay = true;
+            }
+            else{
+
+                getData()->prevDay = false;
+
+                return;
+            }
+            getEnemyText()->setString("NEW DAY!!!");
+        }
+
         std::stringstream wss;
-        wss << "Day/Night: " << n.str() << " | Current Time: " << std::setw(2) << std::setfill('0') << getData()->displayHours << ":"
+        wss << "Days passed: " << getData()->daysPassed << " | Day/Night: " << n.str() << " | Current Time: " << std::setw(2) << std::setfill('0') << getData()->displayHours << ":"
             << std::setw(2) << std::setfill('0') << getData()->minutes; // Format with leading zeros
         std::string m = wss.str();
 
@@ -369,6 +387,7 @@ void StateData::initTimeCycle(){
     */
     worldTimer = std::make_shared<GameTimer>();
     daysPassed = 0;
+    prevDay = false;
 }
 
 void StateData::startBattleThread()
