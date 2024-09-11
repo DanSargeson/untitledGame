@@ -87,7 +87,6 @@ TileMap::TileMap(SDL_Renderer* rend, float gridSize, int width, int height, std:
 
 	for (int x = 0; x < this->maxSizeWorldGrid.x; x++) {
 
-
 		for (int y = 0; y < this->maxSizeWorldGrid.y; y++){
 
 			this->map[x].resize(this->maxSizeWorldGrid.y, std::vector< std::vector<std::shared_ptr<Tile>>>());
@@ -98,14 +97,6 @@ TileMap::TileMap(SDL_Renderer* rend, float gridSize, int width, int height, std:
 			}
 		}
 	}
-	// "Resources/Images/Tiles/basicTiles.png"
-		//if (!this->tileSheet.loadFromFile(this->textureFile))
-		//	std::cout << "Error loading tileTextureSheet : TileMap.cpp. File Name: " << this->textureFile << "\n";
-
-		//this->collisionBox.setSize(sf::Vector2f(gridSize, gridSize));
-		//this->collisionBox.setFillColor(sf::Color::Transparent);
-		//this->collisionBox.setOutlineThickness(-1.f);
-		//this->collisionBox.setOutlineColor(sf::Color::Cyan);
 
 
 	//Tile Cullingdet
@@ -232,20 +223,20 @@ const std::string TileMap::getTileTypeStr(int type){
 		return "Water";
 		break;
 
-	case TILE::RED_TILE:
-		return "RED faction";
+	case TILE::INN_TILE:
+		return "The Golden Duck Inn";
 		break;
 
-	case TILE::YELLOW_TILE:
-		return "YELLOW faction";
+	case TILE::CHURCH_TILE:
+		return "Church of Baphomet";
 		break;
 
-    case TILE::ORANGE_TILE:
-        return "ORANGE faction";
+    case TILE::SHEOL_TILE:
+        return "Sheol Beach";
         break;
 
-	case TILE::GREEN_TILE:
-		return "Green Faction";
+	case TILE::UNK_TILE:
+		return "Unk Cekula";
 		break;
 
     case TILE::BLUE_TILE:
@@ -261,7 +252,7 @@ const std::string TileMap::getTileTypeStr(int type){
         break;
 
     case 9:
-        return "This looks suspicious...";
+        return "Suspicious Cave";
         break;
 
     case 12:
@@ -1527,7 +1518,7 @@ void TileMap::resizeMap(int x, int y) {
 
 void TileMap::createFromSave(int l_x, int l_y, int l_z, int tr_x, int tr_y, bool l_collision, short l_type) {
 
-	
+
 }
 
 //void TileMap::LoadFromFileNEW(const std::string fileName, const int lineOffset) {

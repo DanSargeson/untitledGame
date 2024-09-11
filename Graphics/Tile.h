@@ -10,14 +10,17 @@
 
 #include "Texture.h"
 
+
+
+///TODO: TILE is the sprite that is being used.
 enum TILE {
 
 	DEFAULT_TILE = 0,
 	VILLAGE_TILE,
-	RED_TILE,
-	ORANGE_TILE,
-	YELLOW_TILE,
-	GREEN_TILE,
+	INN_TILE,
+	CHURCH_TILE,
+	SHEOL_TILE,
+	UNK_TILE,
 	BLUE_TILE,
 	INDIGO_TILE,
 	VIOLET_TILE

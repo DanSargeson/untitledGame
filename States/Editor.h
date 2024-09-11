@@ -95,6 +95,8 @@ private:
 	std::map<std::string, GUI::Button*> buttons;
 	std::vector<std::string> fileNames;
 
+	std::shared_ptr<GUI::textBox> pauseMenu;
+
 	//functions
 	void InitVariables();
 	void InitView();

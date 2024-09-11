@@ -11,9 +11,9 @@ Editor::Editor() : State(){
 	this->InitText();
 	this->InitKeyBinds();
 	this->InitPauseMenu();
+	this->InitTileMap();
 	this->InitFileMenu();
 	this->InitButtons();
-	this->InitTileMap();
 	this->InitView();
 	this->InitGUI();
 
@@ -87,6 +87,8 @@ void Editor::InitVariables() {
 
 	this->maxTileTypes = TILE_TYPES::TOTAL_TILES;		//TODO - THIS NEEDS TO BE CHANGED SO TILE TYPES CAN BE CHANGED DYNAMICALLY
 
+	textureRect.x = 0;
+	textureRect.y = 0;
 	textureRect.w = 64;
 	textureRect.h = 64;
 
@@ -195,7 +197,7 @@ void Editor::InitTileMap(){
             StateData::GetInstance()->gridSizeF = 64.f;
 			//StateData::GetInstance()->gridSize = 64;
 			//StateData::GetInstance()->gridSizeF = 64.f;
-			this->mapTextureStr = "Assets/TilesBIG.png";
+			this->mapTextureStr = "Assets/TilesBIG3.png";
 		}
 		else {
 
@@ -217,13 +219,7 @@ void Editor::InitTileMap(){
 
 		outFile.close();
 	}
-
-	//TODO - Create a vector of TileMaps same as characters, have an activeTileMap iterator which can be used to load maps easier than the convoluted if name thing you have now..
-
-
-	///TODO THIS IS HOW TO GENERATE THE MAP...DOES NOT ADD ""TREASURE""
 	this->tileMap = std::make_shared<TileMap>(Engine::GetInstance()->GetRenderer(), 64.f, 15, 15, this->mapTextureStr);
-//	this->tileMap = new TileMap(Engine::GetInstance()->GetRenderer(), StateData::GetInstance()->gridSizeF, 60, 60, this->mapTextureStr);
 }
 
 void Editor::InitGUI(){
@@ -255,14 +251,12 @@ void Editor::InitGUI(){
 
 void Editor::InitPauseMenu() {
 
-
-	//SDL_Window* vm = Engine::GetInstance()->GetWindow();
-	//this->pMenu = new PauseMenu(Engine::GetInstance()->GetRenderer(), *this->font);
-	//
-	//this->pMenu->addButton("SAVE", GUI::p2pX(62.5f, vm), GUI::p2pY(33.3f, vm), GUI::p2pX(31.3f, vm), GUI::p2pY(8.3f, vm), GUI::calcCharSize(), "Save");
-	//this->pMenu->addButton("LOAD", GUI::p2pX(62.5f, vm), GUI::p2pY(45.8f, vm), GUI::p2pX(31.3f, vm), GUI::p2pY(8.3f, vm), GUI::calcCharSize(), "Load");
-	//this->pMenu->addButton("BACK", GUI::p2pX(62.5f, vm), GUI::p2pY(58.3f, vm), GUI::p2pX(31.3f, vm), GUI::p2pY(8.3f, vm), GUI::calcCharSize(), "Back");
-	//this->pMenu->addButton("EXIT_STATE", GUI::p2pX(62.5f, vm), GUI::p2pY(70.8f, vm), GUI::p2pX(31.3f, vm), GUI::p2pY(8.3f, vm), GUI::calcCharSize(), "Quit");
+    pauseMenu = std::make_shared<GUI::textBox>();
+    pauseMenu->setConfirm(true);
+    pauseMenu->setSize(40, 40);
+    pauseMenu->centreTextBox();
+    pauseMenu->setHeader("PAUSED");
+    pauseMenu->setText("Save Map?");
 }
 
 void Editor::InitFileMenu(){
@@ -286,6 +280,12 @@ void Editor::InitFileMenu(){
 	//loadFiles->setDynamicMenu(fileNames, 0);
 ///	loadFiles->setMenuOptions(fileNames, true);
 	//this->ReadDirectory("maps", this->fileNames);
+
+	 if(std::filesystem::exists("MAP1")){
+             tileMap->LoadFromFile("MAP1");
+
+        return;
+     }
 
 
 		//this->fileMenu->ad
@@ -494,6 +494,33 @@ void Editor::updateEvents(SDL_Event &e) {
 	*/
 
 
+	if(pauseMenu->getActive() && mPaused){
+
+        if(pauseMenu->noPressed(e.button)){
+
+            pauseMenu->setActive(false);
+            mPaused = false;
+            //Engine::GetInstance()->PopState();
+        }
+
+        else if(pauseMenu->yesPressed(e.button)){
+
+            tileMap->SaveToFile("MAP1");
+            pauseMenu->setActive(false);
+            mPaused = false;
+        }
+
+        else if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_ESCAPE)){
+
+            pauseMenu->setActive(false);
+            mPaused = false;
+            Engine::GetInstance()->PopState();
+        }
+
+        return;
+	}
+
+
 
 
 	//} //End mouse click check
@@ -525,7 +552,7 @@ void Editor::updateEvents(SDL_Event &e) {
 
             firstRun = false;
 
-            return;
+            //return;
         }
 
 
@@ -560,7 +587,17 @@ void Editor::updateEvents(SDL_Event &e) {
 
 			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_ESCAPE)){
 
-                Engine::GetInstance()->PopState();
+                if(pauseMenu->getActive()){
+
+                    Engine::GetInstance()->PopState();
+
+                }
+                else{
+
+                    pauseMenu->setActive(true);
+                    mPaused = true;
+                }
+
 
                 return;
 			}
@@ -605,6 +642,14 @@ void Editor::updateEvents(SDL_Event &e) {
 				this->lockTiles = false;
 				this->tileMap->placeTreasure(5, 5);
 				this->lockTiles = true;
+			}
+
+			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_B)){
+
+                ///TODO Clear the tilemap and create an empty one...
+                tileMap->clear();
+                InitTileMap();
+                InitGUI();
 			}
 
 			if (keyState[SDL_SCANCODE_H]) {
@@ -672,10 +717,18 @@ void Editor::updateEvents(SDL_Event &e) {
 	if (buttons["HIDE"]->isPressed(e.button)) {
 
 		hidden = !hidden;
+
+		return;
 	}
 	//if (e.type == SDL_MOUSEBUTTONDOWN) {
 
 
+
+///ADD/REMOVE TILE FUNCTION
+/*
+    This needs to move to it's own function....
+*/
+///
 int x, y;
 SDL_GetMouseState(&x, &y);
 	SDL_Rect temp = { x, y, 32, 32 };
@@ -692,8 +745,8 @@ SDL_GetMouseState(&x, &y);
 
 //int newX = (0 / 64);
 //int newY = (0 / 64);
-	x += newX;
-	y += newY;
+    newX += x;
+	newY += y;
 
 
 		if (SDL_HasIntersection(&this->textureSelector->getTextureRect(), &temp) || !SDL_IntersectRect(&this->textureSelector->getTextureRect(), &temp, &result)) {
@@ -703,27 +756,41 @@ SDL_GetMouseState(&x, &y);
 
 			if (hidden) {
 
-				if (x > 0 || y > 0) {
+                    //newX > tilemap->getMaxSizeGrid().x || newY > tilemap->getMaxSizeGrid().y
 
+				if (newX >= 0 || newY >= 0) {
+
+                    ///TODO: The layer is set to 0 for both but should allow layers...
 
 					if (lockTiles) {
 
-						if (this->tileMap->isTileEmpty(x, y, 0)) {
+						if (this->tileMap->isTileEmpty(newX, newY, 0)) {
 
-							this->tileMap->AddTile(x, y, 0, this->textureRect, this->collision, this->type); //Magic number is Z layer coordinate, TODO Refactor
+							this->tileMap->AddTile(newX, newY, 0, this->textureRect, this->collision, this->type); //Magic number is Z layer coordinate, TODO Refactor
+						}
+						else{
+
+                            std::cout << "TILE IS NOT EMPTY!!!" << std::endl;
 						}
 					}
 					else {
 
 
-                        this->tileMap->AddTile(x, y, 0, this->textureRect, this->collision, this->type); //Magic number is Z layer coordinate, TODO Refactor
+                        this->tileMap->AddTile(newX, newY, 0, this->textureRect, this->collision, this->type); //Magic number is Z layer coordinate, TODO Refactor
 					}
 				}
 			}
 			else {
 
-                this->textureRect = this->textureSelector->getTextureRect();
+                    if(!lockTiles && !buttons["HIDE"]->getSelected()){
+                        this->tileMap->AddTile(newX, newY, 0, this->textureRect, this->collision, this->type);
+                    }
+                    else{
 
+                        textureSelector->update(e.button);
+                        this->textureRect = this->textureSelector->getTextureRect();
+                    }
+                //hidden = true;
 			}
 
 		}
@@ -749,115 +816,20 @@ SDL_GetMouseState(&x, &y);
 		}
 		//}
 	}
-}
 
 
+	///END ADD/REMOVE TILE FUNCTION
+    /*
+        This needs to move to it's own function....
+    */
+    ///
 
-//void Editor::updateMouseEvents(SDL_MouseButtonEvent & e){
-//
-//	textureSelector->update(e);
-//
-//	for (auto &it : this->buttons) {
-//
-//		it.second->update();
-//	}
-//
-//
-//	if (buttons["HIDE"]->isPressed(e)) {
-//
-//		hidden = !hidden;
-//	}
-//	//if (e.type == SDL_MOUSEBUTTONDOWN) {
-//
-//
-//int x, y;
-//SDL_GetMouseState(&x, &y);
-//	SDL_Rect temp = { x, y, 32, 32 };
-//	SDL_Rect result = { 0, 0, 32, 32 };
-//
-//	if (e.button == SDL_BUTTON_LEFT){
-//
-//
-//	x /= (StateData::GetInstance()->gridSize);
-//	y /= StateData::GetInstance()->gridSize;
-//
-/////	int newX = (StateData::GetInstance()->getCamera().x / StateData::GetInstance()->gridSize);
-/////	int newY = (StateData::GetInstance()->getCamera().y / StateData::GetInstance()->gridSize);
-//
-//int newX = 800;
-//int newY = 600;
-//	x += newX;
-//	y += newY;
-//
-//
-//		if (SDL_HasIntersection(&this->textureSelector->getTextureRect(), &temp) || !SDL_IntersectRect(&this->textureSelector->getTextureRect(), &temp, &result)) {
-//
-//			//}
-//			//if (!SDL_IntersectRect(&this->textureSelector->getTextureRect(), &temp, &result)) {
-//
-//			if (hidden && !this->firstRun) {
-//
-//				if (x > 0 || y > 0) {
-//
-//
-//					if (lockTiles) {
-//
-//						if (this->tileMap->isTileEmpty(x, y, 0)) {
-//
-//							this->tileMap->AddTile(x, y, 0, this->textureRect, this->collision, this->type); //Magic number is Z layer coordinate, TODO Refactor
-//						}
-//					}
-//					else {
-//
-//						if (this->getKeyTime())
-//							this->tileMap->AddTile(x, y, 0, this->textureRect, this->collision, this->type); //Magic number is Z layer coordinate, TODO Refactor
-//					}
-//				}
-//			}
-//			else {
-//
-//                this->textureRect = this->textureSelector->getTextureRect();
-//
-//			}
-//
-//		}
-//	}
-//	else if (e.button== SDL_BUTTON_RIGHT) {
-//
-//        x /= (StateData::GetInstance()->gridSize);
-//        y /= StateData::GetInstance()->gridSize;
-//
-/////	int newX = (StateData::GetInstance()->getCamera().x / StateData::GetInstance()->gridSize);
-/////	int newY = (StateData::GetInstance()->getCamera().y / StateData::GetInstance()->gridSize);
-//int newX = 100;
-//int newY = 100;
-//	x += newX;
-//	y += newY;
-//
-//		//if (!textureSelector->getActive()) {
-//
-//			this->tileMap->RemoveTile(x, y, 0);
-//		//}
-//	}
-//}
+}   ///End updateEvents
+
 
 void Editor::updateGUI(){
 
 
-	//this->textureSelector->UpdateWindow(this->mousePosWindow, dt);
-
-
-		//this->selectorRect.setTextureRect(this->textureRect);
-		//this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize, this->mousePosGrid.y * this->stateData->gridSize);
-		//int x, y;
-		//SDL_GetMouseState(&x, &y);
-		//textureRect.x = x / StateData::GetInstance()->gridSize;
-		//textureRect.y = y / StateData::GetInstance()->gridSize;
-		//textureRect.w = StateData::GetInstance()->gridSize;
-		//textureRect.h = StateData::GetInstance()->gridSize;
-
-	//this->cursorText.setCharacterSize(16);
-    //StateData::GetInstance()->updateCamera();
 
 	std::string test = this->tileMap->getTileTypeStr(this->type);
 
@@ -869,37 +841,14 @@ void Editor::updateGUI(){
 	int newX, newY;
 
 
-	//x += StateData::GetInstance()->getCamera().x;
-
-//	if(camMovement){
-//
-//
-//
-//        SDL_GetMouseState(&xOff, &yOff);
-//
-//        newX = xOff + StateData::GetInstance()->getCamera().x;
-//        yOff = yOff + StateData::GetInstance()->getCamera().y;
-//
-//        newX = xOff / StateData::GetInstance()->gridSize;
-//        newY = yOff / StateData::GetInstance()->gridSize;
-//
-//        selectorRectBig.x = newX;
-//        selectorRectBig.y = newY * StateData::GetInstance()->gridSize;
-//
-//
-//        camMovement = false;
-//	}
-//	else{
-
-            SDL_GetMouseState(&x, &y);
+    SDL_GetMouseState(&x, &y);
 
 
+    x /= 64;
+    y /= 64;
 
-            x /= 64;
-            y /= 64;
-
-            newX = StateData::GetInstance()->getCamera().x / StateData::GetInstance()->gridSize;
-            newY = StateData::GetInstance()->getCamera().y / StateData::GetInstance()->gridSize;
+    newX = StateData::GetInstance()->getCamera().x / StateData::GetInstance()->gridSize;
+    newY = StateData::GetInstance()->getCamera().y / StateData::GetInstance()->gridSize;
 
 
 
@@ -916,16 +865,9 @@ void Editor::updateGUI(){
 
 
 
-	//selectorRectBig.x = x;
-	//selectorRectBig.y = y;
 	selectorRectBig.h = 64;
 	selectorRectBig.w = 64;
 	//selectorRectBig.x += StateData::GetInstance()->getCamera().x;
-
-
-
-
-
 
 
 	std::stringstream ss;
@@ -1110,6 +1052,12 @@ void Editor::update(const float & dt) {
 ///	updateKeyTime(dt, 0.5f);
 	//this->UpdateInput(dt);
 
+    if(pauseMenu->getActive() && mPaused){
+
+        pauseMenu->update();
+
+        return;
+    }
 
 	this->paused = false;
 
@@ -1192,6 +1140,11 @@ void Editor::RenderGUI(){
 	if (!hidden) {
 
 		this->textureSelector->render();
+	}
+
+	if(pauseMenu->getActive()){
+
+        pauseMenu->render();
 	}
 
 	//SDL_RenderFillRect(rend, &sidebar);
