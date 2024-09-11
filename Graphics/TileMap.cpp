@@ -239,8 +239,8 @@ const std::string TileMap::getTileTypeStr(int type){
 		return "Unk Cekula";
 		break;
 
-    case TILE::BLUE_TILE:
-		return "BLUE faction";
+    case TILE::EMESH_TILE:
+		return "Emesh Forest";
 		break;
 
     case TILE::INDIGO_TILE:

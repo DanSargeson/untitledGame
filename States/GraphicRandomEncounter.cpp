@@ -3,6 +3,7 @@
 #include "Battle.h"
 #include "Church.h"
 #include "Sheol.h"
+#include "Emesh.h"
 
 GraphicRandomEncounter::GraphicRandomEncounter() : State(){
     //ctor
@@ -145,6 +146,10 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
         else if(type == TILE::SHEOL_TILE){
 
             Engine::GetInstance()->AddState(std::make_shared<Sheol>());
+        }
+        else if(type == TILE::EMESH_TILE){
+
+            Engine::GetInstance()->AddState(std::make_shared<Emesh>());
         }
 
         else if(type == 9){
