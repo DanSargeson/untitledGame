@@ -472,7 +472,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1724948058 c:\users\dansa\onedrive\documents\github\untitledgame\states\state.h
+1726077420 c:\users\dansa\onedrive\documents\github\untitledgame\states\state.h
 	<memory>
 	<string>
 	<vector>
@@ -506,7 +506,7 @@
 	<algorithm>
 	<memory>
 
-1723752502 c:\users\dansa\onedrive\documents\github\untitledgame\items\item.h
+1726063043 c:\users\dansa\onedrive\documents\github\untitledgame\items\item.h
 	<SDL.h>
 	<SDL2/SDL.h>
 	<string>
@@ -882,7 +882,7 @@
 	<queue>
 	<functional>
 
-1723575108 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\gui.cpp
+1726068924 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\gui.cpp
 	"GUI.h"
 	"Texture.h"
 	"State.h"
@@ -894,7 +894,7 @@
 1721591878 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\tile.cpp
 	"Tile.h"
 
-1721591878 c:\users\dansa\onedrive\documents\github\untitledgame\graphics\tile.h
+1726070536 c:\users\dansa\onedrive\documents\github\untitledgame\graphics\tile.h
 	<fstream>
 	<sstream>
 	<vector>
@@ -903,7 +903,7 @@
 	<cstdlib>
 	"Texture.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\tilemap.cpp
+1726070512 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\tilemap.cpp
 	"TileMap.h"
 	<memory>
 
@@ -928,7 +928,7 @@
 1724179403 source:c:\users\dansa\onedrive\documents\github\untitledgame\items\inventory.cpp
 	"Inventory.h"
 
-1717948624 source:c:\users\dansa\onedrive\documents\github\untitledgame\items\item.cpp
+1726063030 source:c:\users\dansa\onedrive\documents\github\untitledgame\items\item.cpp
 	"Item.h"
 
 1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\items\key.cpp
@@ -987,11 +987,11 @@
 	"GUI.h"
 	"State.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\editor.cpp
+1726058239 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\editor.cpp
 	"Editor.h"
 	"Input.h"
 
-1714761829 c:\users\dansa\onedrive\documents\github\untitledgame\states\editor.h
+1725968747 c:\users\dansa\onedrive\documents\github\untitledgame\states\editor.h
 	"State.h"
 	"GUI.h"
 	"TileMap.h"
@@ -1013,7 +1013,7 @@
 	"GUI.h"
 	"State.h"
 
-1724239959 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\game.cpp
+1726075149 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\game.cpp
 	"Game.h"
 	"Engine.h"
 	"Event.h"
@@ -1049,10 +1049,12 @@
 	"GUI.h"
 	"State.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\graphicrandomencounter.cpp
+1726071833 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\graphicrandomencounter.cpp
 	"GraphicRandomEncounter.h"
 	"RandomEncounter.h"
 	"Battle.h"
+	"Church.h"
+	"Sheol.h"
 
 1724240065 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\increaseattributes.cpp
 	"IncreaseAttributes.h"
@@ -1064,7 +1066,7 @@
 	"Engine.h"
 	"Game.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\mainmenu.cpp
+1726074212 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\mainmenu.cpp
 	"MainMenu.h"
 	"CharacterCreator.h"
 	"LoadGame.h"
@@ -1089,7 +1091,7 @@
 	"Settings.h"
 	"Engine.h"
 
-1724948054 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\state.cpp
+1726077105 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\state.cpp
 	"State.h"
 	"Engine.h"
 	"NPC.h"
@@ -1106,4 +1108,30 @@
 1719332265 source:c:\users\dansa\onedrive\documents\github\untitledgame\main.cpp
 	"Engine.h"
 	"Timer.h"
+
+1703549078 c:\users\dansa\onedrive\documents\code\sdl2\x86_64-w64-mingw32\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1726067405 source:c:\users\dansa\onedrive\documents\github\untitledgame\items\consumable.cpp
+	"Consumable.h"
+
+1726066828 c:\users\dansa\onedrive\documents\github\untitledgame\items\consumable.h
+	"Item.h"
+
+1726077510 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\church.cpp
+	"Church.h"
+
+1726071380 c:\users\dansa\onedrive\documents\github\untitledgame\states\church.h
+	"NPC.h"
+	"State.h"
+
+1726071755 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\sheol.cpp
+	"Sheol.h"
+
+1726071646 c:\users\dansa\onedrive\documents\github\untitledgame\states\sheol.h
+	"NPC.h"
+	"State.h"
 

@@ -41,6 +41,12 @@ State::State() {
         timerText = std::make_shared<GUI::Text>();
         timerText->setPosition(GUI::p2pX(55), GUI::p2pY(20));
     }
+
+    if(worldTimerText == nullptr){
+
+        worldTimerText = std::make_shared<GUI::Text>();
+        worldTimerText->setPosition(GUI::p2pX(75), GUI::p2pY(2));
+    }
     this->quit = false;
     keyTimeMax = 0.5f;
     keyTime = 0.f;
@@ -252,6 +258,46 @@ void State::update(const float &dt){
 
         timerText->setString(m);
     }
+
+
+    calcWorldTime();
+}
+
+void State::calcWorldTime(){
+
+    float wt = getData()->worldTimer->getTicks() / 1000.f; // Current time in seconds
+
+        // Convert to a day/night cycle (900 seconds = 15 minutes for a full 24-hour day)
+        getData()->dayCycle = 900.0f; // 900 seconds for a full cycle
+        getData()->cycleTime = fmod(wt, getData()->dayCycle); // Time within the current cycle
+
+        // Convert cycle time to a 24-hour format
+        getData()->hours = getData()->cycleTime / (getData()->dayCycle / 24.0f); // Convert to "hours"
+        getData()->minutes = static_cast<int>((getData()->hours - static_cast<int>(getData()->hours)) * 60); // Convert the fraction of the hour to minutes
+
+        // Format the time as HH:MM
+        getData()->displayHours = static_cast<int>(getData()->hours) % 24; // Ensure hours wrap around after 24
+        getData()->isDay = false;
+        if(getData()->hours > 6.0f && getData()->hours < 18.f){
+
+            getData()->isDay = true;
+        }
+        std::stringstream n;
+        if(getData()->isDay){
+            n << "Day";
+        }
+        else{
+
+            n << "Night";
+        }
+        std::stringstream wss;
+        wss << "Day/Night: " << n.str() << " | Current Time: " << std::setw(2) << std::setfill('0') << getData()->displayHours << ":"
+            << std::setw(2) << std::setfill('0') << getData()->minutes; // Format with leading zeros
+        std::string m = wss.str();
+
+        // Update your text object
+        worldTimerText->setString(m);
+        ///std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
 
 void State::updateEvents(SDL_Event& e){
@@ -311,6 +357,20 @@ void State::updateEvents(SDL_Event& e){
 //    }
 }
 
+void StateData::initTimeCycle(){
+
+    ///TODO
+    /*Need to start a timer from 0 and that can == first day of the year. GetTicks and divide by a number to slow it down and have
+    1 day == ten minutes or something.
+    If timer getTicks >= 24 hours reset, add to dayCounter
+    if getTicks >= 6:00 && <= 18:00 then it is day, else night
+
+        Will need to alter save/load data to include currentTick and number of days passed...
+    */
+    worldTimer = std::make_shared<GameTimer>();
+    daysPassed = 0;
+}
+
 void StateData::startBattleThread()
 
     {
@@ -322,7 +382,6 @@ void StateData::startBattleThread()
       battleThread = std::thread(&StateData::startFollowerAction, this);
     }
 }
-
 
 ///TODO: Need a folower action manager function which determines follower type and runs appropriate thing.. Battle/Search for items etc.
 

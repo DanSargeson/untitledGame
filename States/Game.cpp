@@ -13,6 +13,10 @@
 
 Game::Game() : State(){
 
+
+  ///TODO: Game timer should be loaded in mainMenu....
+  getData()->worldTimer->start();
+
   ///  Mix_HaltMusic();
 
 //  b = std::make_shared<Battle>(true);
@@ -1021,4 +1025,6 @@ void Game::render(){
 
         confirmationBox->render();
     }
+
+    worldTimerText->render();
 }

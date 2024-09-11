@@ -29,7 +29,15 @@ Church::~Church(){
 
 void Church::update(const float& dt){
 
-    std::string msg = satan->getName() + " sits at the front of the church looking bored.";
+    std::string msg = "";
+    if(!getData()->isDay){
+
+        msg = satan->getName() + " sits at the front of the church looking bored.";
+    }
+    else{
+
+        msg = "No one is around, maybe you should try at night??";
+    }
     getMainText()->setString(msg, true);
 
     mButtons["BACK"]->update();

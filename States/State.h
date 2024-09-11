@@ -63,17 +63,26 @@ public:
     }
 
     void startBattleThread();
-
- std::shared_ptr<class Battle> b;
+    void initTimeCycle();
+    std::shared_ptr<class Battle> b;
 
     std::shared_ptr<GameTimer> followerTimer;
-     int battleCounter;
+    std::shared_ptr<GameTimer> worldTimer;
+    int daysPassed;
+    int battleCounter;
 
      void runFollowerBattles();
      void startFollowerAction();
 
+     float cycleTime;
+     float dayCycle;
+     float hours;
+     int minutes;
+     int displayHours;
+     bool isDay;
 
-static std::atomic<bool> battleThreadRunning;
+
+    static std::atomic<bool> battleThreadRunning;
     static std::atomic<bool> battleThreadPaused;
     std::thread battleThread;
     std::mutex mtx;
@@ -158,6 +167,9 @@ public:
     virtual void updateButtons();
     virtual void render() = 0;
 
+
+    void calcWorldTime();
+
     int getRandomValue(int low, int high);
 
     void loadCharacters();
@@ -192,6 +204,7 @@ protected:
     bool exitingBattles;
     bool mainScreen;
     std::shared_ptr<GUI::Text> timerText;
+    std::shared_ptr<GUI::Text> worldTimerText;
     std::map<std::string, std::shared_ptr<GUI::Button>> mButtons;
     std::shared_ptr<GUI::textBox> confirmationBox;
    // StateData* mStateData;

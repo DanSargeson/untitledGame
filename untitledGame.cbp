@@ -30,6 +30,10 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_ttf-2.20.2/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_mixer-2.6.3/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_image-2.8.1/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2/include/SDL2" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Assets" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Components" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Engine" />
@@ -40,17 +44,14 @@
 			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Items" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/States" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/GitHub/untitledGame/Timer" />
-			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_image-2.8.1/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_mixer-2.6.3/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_ttf-2.20.2/x86_64-w64-mingw32/include/SDL2" />
 		</Compiler>
 		<Linker>
+			<Add option="-lmingw32" />
 			<Add option="-lSDL2main" />
 			<Add option="-lSDL2" />
-			<Add option="-lSDL_image" />
-			<Add option="-lSDL_ttf" />
-			<Add option="-lSDL_mixer" />
+			<Add option="-lSDL2_image" />
+			<Add option="-lSDL2_ttf" />
+			<Add option="-lSDL2_mixer" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2/lib" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_image-2.8.1/x86_64-w64-mingw32/lib" />
 			<Add directory="C:/Users/dansa/OneDrive/Documents/Code/SDL2_mixer-2.6.3/x86_64-w64-mingw32/lib" />
@@ -101,6 +102,8 @@
 		<Unit filename="Inputs/Input.h" />
 		<Unit filename="Items/Armour.cpp" />
 		<Unit filename="Items/Armour.h" />
+		<Unit filename="Items/Consumable.cpp" />
+		<Unit filename="Items/Consumable.h" />
 		<Unit filename="Items/Inventory.cpp" />
 		<Unit filename="Items/Inventory.h" />
 		<Unit filename="Items/Item.cpp" />
@@ -117,6 +120,9 @@
 		<Unit filename="States/CharacterCreator.h" />
 		<Unit filename="States/CharacterMenu.cpp" />
 		<Unit filename="States/CharacterMenu.h" />
+		<Unit filename="States/Church" />
+		<Unit filename="States/Church.cpp" />
+		<Unit filename="States/Church.h" />
 		<Unit filename="States/Editor.cpp" />
 		<Unit filename="States/Editor.h" />
 		<Unit filename="States/FactionEncounter.cpp" />
@@ -139,10 +145,13 @@
 		<Unit filename="States/RandomEncounter.h" />
 		<Unit filename="States/Settings.cpp" />
 		<Unit filename="States/Settings.h" />
+		<Unit filename="States/Sheol.cpp" />
+		<Unit filename="States/Sheol.h" />
 		<Unit filename="States/State.cpp" />
 		<Unit filename="States/State.h" />
 		<Unit filename="Timer/Timer.cpp" />
 		<Unit filename="Timer/Timer.h" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
