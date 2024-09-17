@@ -390,6 +390,7 @@ void CharacterCreator::updateEvents(SDL_Event& e){
             temp->updateStats();
             temp->createSkillComponent();
             temp->calculateSkills();
+            temp->createWorldTimer();
 //            temp->setAttributePoints(0);
             StateData::GetInstance()->characters.push_back(temp);
 
@@ -425,7 +426,7 @@ void CharacterCreator::updateEvents(SDL_Event& e){
             saveCharacters();
 //           StateData::GetInstance()->setTutorial(true);
         Engine::GetInstance()->PopState();
-        setSkipIntro(false);
+        setSkipIntro(true);
         Engine::GetInstance()->AddState(std::make_shared<Game>());
         Engine::GetInstance()->AddState(std::make_shared<PlayerDeath>());
 

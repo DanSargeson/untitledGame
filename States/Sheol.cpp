@@ -33,6 +33,8 @@ void Sheol::update(const float& dt){
     getMainText()->setString(msg, true);
 
     mButtons["BACK"]->update();
+    getActiveCharacter()->getWorldTimer()->update(dt);
+    calcWorldTime();
 }
 
 void Sheol::updateEvents(SDL_Event& e){
@@ -55,4 +57,6 @@ void Sheol::render(){
 
         button.second->renderButtons();
     }
+
+    worldTimerText->render();
 }

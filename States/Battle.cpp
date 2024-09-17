@@ -424,7 +424,7 @@ void Battle::update(const float& dt){
 //        return;
 //    }
 
-calcWorldTime();
+//calcWorldTime();
 
 
 if(!endTurn){

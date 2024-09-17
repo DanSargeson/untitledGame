@@ -177,6 +177,7 @@ void CharacterMenu::update(const float& dt){
         button.second->update();
     }
 
+    getActiveCharacter()->getWorldTimer()->update(dt);
     calcWorldTime();
 }
 

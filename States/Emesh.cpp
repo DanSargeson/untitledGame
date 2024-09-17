@@ -29,10 +29,21 @@ Emesh::~Emesh(){
 
 void Emesh::update(const float& dt){
 
-    std::string msg = Yam->getName() + " peers out through the thicket of trees.";
+    std::string msg = "";
+
+    if(getData()->isDay){
+
+        msg = Yam->getName() + " peers out through the thicket of trees.";
+    }
+    else{
+
+        msg = "The stillness of the forest is unsettling at night.";
+    }
     getMainText()->setString(msg, true);
 
     mButtons["BACK"]->update();
+
+    getActiveCharacter()->getWorldTimer()->update(dt);
     calcWorldTime();
 }
 

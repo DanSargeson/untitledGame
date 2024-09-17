@@ -36,6 +36,11 @@ void StateData::initFonts(){
 
 State::State() {
 
+    if(holdTimer == nullptr){
+
+        holdTimer = std::make_shared<GameTimer>();
+    }
+
     if(timerText == nullptr){
 
         timerText = std::make_shared<GUI::Text>();
@@ -116,6 +121,8 @@ State::~State(){
 void State::setData(StateData& stateData){
 
     StateData::GetInstance()->currentState = 0;
+    StateData::GetInstance()->hours = 0.0f;
+    StateData::GetInstance()->minutes = 0.0f;
 }
 
 bool State::getQuit(){
@@ -259,63 +266,55 @@ void State::update(const float &dt){
         timerText->setString(m);
     }
 
+    getActiveCharacter()->getWorldTimer()->update(dt);
 
     calcWorldTime();
 }
 
-void State::calcWorldTime(){
+void State::calcWorldTime() {
 
-    float wt = getData()->worldTimer->getTicks() / 1000.f; // Current time in seconds
+      float wt = getActiveCharacter()->getWorldTimer()->getTime(); // Current time in seconds
 
-        // Convert to a day/night cycle (900 seconds = 15 minutes for a full 24-hour day)
-        getData()->dayCycle = 50.0f; // 900 seconds for a full cycle
-        getData()->cycleTime = fmod(wt, getData()->dayCycle); // Time within the current cycle
+    // Convert to a day/night cycle (900 seconds = 15 minutes for a full 24-hour day)
+    float dayCycle = getData()->dayCycle;
+    getData()->cycleTime = fmod(wt, dayCycle); // Time within the current cycle
 
-        // Convert cycle time to a 24-hour format
-        getData()->hours = getData()->cycleTime / (getData()->dayCycle / 24.0f); // Convert to "hours"
-        getData()->minutes = static_cast<int>((getData()->hours - static_cast<int>(getData()->hours)) * 60); // Convert the fraction of the hour to minutes
+    // Convert cycle time to a 24-hour format
+    getData()->hours = getData()->cycleTime / (dayCycle / 24.0f); // Convert to "hours"
 
-        // Format the time as HH:MM
-        getData()->displayHours = static_cast<int>(getData()->hours) % 24; // Ensure hours wrap around after 24
-        getData()->isDay = false;
-        if(getData()->hours > 6.0f && getData()->hours < 18.f){
+    // Convert the fraction of the hour to minutes accurately
+    getData()->minutes = static_cast<int>((getData()->hours - floor(getData()->hours)) * 60); // Correct fractional conversion
 
-            getData()->isDay = true;
-        }
-        std::stringstream n;
-        if(getData()->isDay){
-            n << "Day";
-        }
-        else{
+    // Format the time as HH:MM
+    getData()->displayHours = static_cast<int>(getData()->hours) % 24; // Ensure hours wrap around after 24
 
-            n << "Night";
-        }
+    // Determine if it's day (between 06:00 and 18:00)
+    getData()->isDay = (getData()->hours >= 6.0f && getData()->hours < 18.0f);
 
+    // Determine day/night status
+    std::string dayNightStatus = getData()->isDay ? "Day" : "Night";
 
-        if(static_cast<int>(getData()->hours) == 0 && getData()->minutes == 0){
-
-            if(!getData()->prevDay){
-
-                getData()->daysPassed++;
-                getData()->prevDay = true;
-            }
-            else{
-
-                getData()->prevDay = false;
-
-                return;
-            }
+    // Check if it's midnight and increment the day counter
+    if (static_cast<int>(getData()->hours) == 0 && getData()->minutes == 0) {
+        if (!getData()->prevDay) {  // First encounter with midnight
+            getActiveCharacter()->increaseDaysPassed();
+            getData()->prevDay = true; // Flag to prevent multiple increments
+            holdTimer->start(); // Start the hold timer
             getEnemyText()->setString("NEW DAY!!!");
         }
+    } else {
+        getData()->prevDay = false; // Reset flag when time moves past 00:00
+    }
 
-        std::stringstream wss;
-        wss << "Days passed: " << getData()->daysPassed << " | Day/Night: " << n.str() << " | Current Time: " << std::setw(2) << std::setfill('0') << getData()->displayHours << ":"
-            << std::setw(2) << std::setfill('0') << getData()->minutes; // Format with leading zeros
-        std::string m = wss.str();
+    // Create the formatted time string
+    std::stringstream wss;
+    wss << "Date: " << getActiveCharacter()->getDaysPassed()
+        << " | Day/Night: " << dayNightStatus
+        << " | Current Time: " << std::setw(2) << std::setfill('0') << getData()->displayHours << ":"
+        << std::setw(2) << std::setfill('0') << getData()->minutes; // Format with leading zeros
 
-        // Update your text object
-        worldTimerText->setString(m);
-        ///std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    // Update the text object with the formatted time
+    worldTimerText->setString(wss.str());
 }
 
 void State::updateEvents(SDL_Event& e){
@@ -332,6 +331,7 @@ void State::updateEvents(SDL_Event& e){
         std::cout << std::to_string(Engine::GetInstance()->getCurrentState()) << std::endl;
         if(Engine::GetInstance()->getCurrentState() == 1){
 
+            getActiveCharacter()->getWorldTimer()->pause();
             confirmationBox->setActive(true);
             if(getData()->battleThreadRunning.load() /*&& !getData()->battleThreadPaused.load()*/){
                 //getData()->battleThreadPaused.store(true);
@@ -385,9 +385,18 @@ void StateData::initTimeCycle(){
 
         Will need to alter save/load data to include currentTick and number of days passed...
     */
-    worldTimer = std::make_shared<GameTimer>();
-    daysPassed = 0;
-    prevDay = false;
+    if(getActiveCharacter()->getWorldTimer() == nullptr){
+
+        getActiveCharacter()->createWorldTimer();
+        getActiveCharacter()->setDaysPassed(0);
+    }
+    else{
+
+        getActiveCharacter()->getWorldTimer()->resume();
+    }
+
+    prevDay = true;
+    dayCycle = 900.0f; // 900 seconds for a full cycle
 }
 
 void StateData::startBattleThread()
@@ -662,6 +671,9 @@ void State::loadCharacters(){
 	int followerEXP = 0;
 	int followerHP = 0;
 
+	std::string startTick = "";
+	int daysPassed = 0;
+
 
     if(inFile.is_open()){
 		while (getline(inFile, line)) {
@@ -876,6 +888,21 @@ void State::loadCharacters(){
 				temp->addFollower(av);
 			}
 
+			strs.clear();
+			line.clear();
+			getline(inFile, line);
+			strs.str(line);
+            while(
+			strs >> startTick
+			>> daysPassed
+			){
+
+                temp->createWorldTimer();
+                temp->getWorldTimer()->loadTimerFromStr(startTick);
+                temp->setDaysPassed(daysPassed);
+			}
+
+
                 ///TODO: Check this...
 				///temp->setInv(tempItems);
                 StateData::GetInstance()->characters.push_back(temp);
@@ -921,6 +948,7 @@ void State::saveCharacters()
 			outFile << StateData::GetInstance()->characters[i]->getEquippedArmour() << "\n";
 			outFile <<	StateData::GetInstance()->characters[i]->getInvAsStringSave() << "\n";
 			outFile << StateData::GetInstance()->characters[i]->getFollowersStrSave() << "\n";
+			outFile << StateData::GetInstance()->characters[i]->getWorldTimer()->saveTimer() << " " << getData()->characters[i]->getDaysPassed() << "\n";
 		}
     }
 

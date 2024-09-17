@@ -18,7 +18,7 @@
 
 MainMenu::MainMenu() : State(){
 
-    StateData::GetInstance()->initTimeCycle();
+///    StateData::GetInstance()->initTimeCycle();
     setSkipIntro(true);
     mBgTexture = std::make_unique<Texture>();
 

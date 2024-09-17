@@ -49,6 +49,9 @@ private:
 
 	int corruption;
 
+	int daysPassed;
+	std::shared_ptr<WorldTimer> worldTimer;
+
 public:
     Player();
     Player(string name, int dt);
@@ -97,6 +100,11 @@ public:
 
 	//int getBonus(int type);
 
+	inline void increaseDaysPassed() { daysPassed++; }
+	inline std::shared_ptr<WorldTimer> getWorldTimer() { return worldTimer; }
+	inline int getDaysPassed() { return daysPassed; }
+    inline void createWorldTimer() { worldTimer = std::make_shared<WorldTimer>(); }
+    inline void setDaysPassed(int i) { daysPassed = i; }
 
 	std::string printFollowers();
 	std::vector<std::shared_ptr<GUI::Text>> getFollowersAsStrVec();

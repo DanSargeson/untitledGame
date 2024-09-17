@@ -41,6 +41,7 @@ void Church::update(const float& dt){
     getMainText()->setString(msg, true);
 
     mButtons["BACK"]->update();
+    getActiveCharacter()->getWorldTimer()->update(dt);
     calcWorldTime();
 }
 

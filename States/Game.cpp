@@ -15,8 +15,13 @@ Game::Game() : State(){
 
 
   ///TODO: Game timer should be loaded in mainMenu....
-  getData()->worldTimer->start();
+  ///getData()->getActiveCharacter()->getWorldTimer()->start();
 
+    getData()->initTimeCycle();
+    if(!getActiveCharacter()->getWorldTimer()->isStarted()){
+
+        getActiveCharacter()->getWorldTimer()->start();
+    }
   ///  Mix_HaltMusic();
 
 //  b = std::make_shared<Battle>(true);
@@ -669,7 +674,10 @@ void Game::updateEvents(SDL_Event& e){
 
                 exitingBattles = false;
                 confirmationBox->setActive(false);
+                ///
             }
+
+            getActiveCharacter()->getWorldTimer()->resume();
         }
 
         return;

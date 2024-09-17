@@ -220,6 +220,8 @@ void FollowerMenu::update(const float& dt){
     }
 
     backButton->update();
+
+    getActiveCharacter()->getWorldTimer()->update(dt);
     calcWorldTime();
 
     if(!getActiveCharacter()->getFollowers().empty()){
@@ -594,8 +596,6 @@ void FollowerMenu::render(){
     }
     }
 
-    worldTimerText->render();
-
     if(!invMenu2->getActive() && !menu->getActive() && getActiveCharacter()->getFollowers().size() <= 0){
 
         getMainText()->setString("You have no followers", true);
@@ -604,6 +604,8 @@ void FollowerMenu::render(){
         getFollowerText()->render();
         backButton->renderButtons();
     }
+
+     worldTimerText->render();
 }
 
 void FollowerMenu::initButtons(){

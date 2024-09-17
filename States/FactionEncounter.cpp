@@ -77,7 +77,7 @@ void FactionEncounter::update(const float& dt){
         }
     }
 
-    calcWorldTime();
+//    calcWorldTime();
 }
 
 void FactionEncounter::updateText(){

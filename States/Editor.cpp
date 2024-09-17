@@ -219,7 +219,9 @@ void Editor::InitTileMap(){
 
 		outFile.close();
 	}
-	this->tileMap = std::make_shared<TileMap>(Engine::GetInstance()->GetRenderer(), 64.f, 15, 15, this->mapTextureStr);
+	int tileMapMaxSizeX = 27; ///Was 15...
+	int tileMapMaxSizeY = 15;
+	this->tileMap = std::make_shared<TileMap>(Engine::GetInstance()->GetRenderer(), 64.f, tileMapMaxSizeX, tileMapMaxSizeY, this->mapTextureStr);
 }
 
 void Editor::InitGUI(){

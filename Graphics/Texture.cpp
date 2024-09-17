@@ -196,8 +196,8 @@ void Texture::renderToViewPort(SDL_Renderer* rend, int x, int y, SDL_Rect* clip,
 void Texture::render(SDL_Renderer* rend, int x, int y, SDL_Rect * clip, SDL_Rect cam, double angle, SDL_Point * centre, SDL_RendererFlip){
 
 
-	mX = x - cam.x;
-	mY = y - cam.y;
+	mX = x; //+ cam.x;
+	mY = y; //+ cam.y;
 	SDL_Rect renderQuad = { mX,  mY, mWidth, mHeight };
 
 	if (clip) {

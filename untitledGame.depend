@@ -472,7 +472,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1726079932 c:\users\dansa\onedrive\documents\github\untitledgame\states\state.h
+1726574260 c:\users\dansa\onedrive\documents\github\untitledgame\states\state.h
 	<memory>
 	<string>
 	<vector>
@@ -493,7 +493,7 @@
 	"Camera.h"
 	"Timer.h"
 
-1723561886 c:\users\dansa\onedrive\documents\github\untitledgame\entities\player.h
+1726574920 c:\users\dansa\onedrive\documents\github\untitledgame\entities\player.h
 	"Inventory.h"
 	"Entity.h"
 	"GUI.h"
@@ -525,7 +525,7 @@
 	<memory>
 	"Inventory.h"
 
-1719497090 c:\users\dansa\onedrive\documents\github\untitledgame\graphics\gui.h
+1726508988 c:\users\dansa\onedrive\documents\github\untitledgame\graphics\gui.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<SDL2/SDL.h>
@@ -535,9 +535,10 @@
 	<memory>
 	<vector>
 
-1719487395 c:\users\dansa\onedrive\documents\github\untitledgame\timer\timer.h
+1726574880 c:\users\dansa\onedrive\documents\github\untitledgame\timer\timer.h
 	<cstdint>
 	<string>
+	<chrono>
 
 1723561886 c:\users\dansa\onedrive\documents\github\untitledgame\entities\enemy.h
 	<stdlib.h>
@@ -800,7 +801,7 @@
 	"SkillComponent.h"
 	"AttributeComponent.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\engine\camera.cpp
+1726494745 source:c:\users\dansa\onedrive\documents\github\untitledgame\engine\camera.cpp
 	"Camera.h"
 
 1719906999 source:c:\users\dansa\onedrive\documents\github\untitledgame\engine\engine.cpp
@@ -888,7 +889,7 @@
 	"State.h"
 	"Engine.h"
 
-1719314855 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\texture.cpp
+1726494859 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\texture.cpp
 	"Texture.h"
 
 1721591878 source:c:\users\dansa\onedrive\documents\github\untitledgame\graphics\tile.cpp
@@ -946,7 +947,7 @@
 1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\items\weapon.cpp
 	"Weapon.h"
 
-1726080848 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\battle.cpp
+1726081444 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\battle.cpp
 	"Battle.h"
 	"Engine.h"
 	"Input.h"
@@ -967,7 +968,7 @@
 	"Timer.h"
 	"State.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\charactercreator.cpp
+1726507506 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\charactercreator.cpp
 	"CharacterCreator.h"
 	"Game.h"
 	"PlayerDeath.h"
@@ -978,7 +979,7 @@
 	"Texture.h"
 	"Player.h"
 
-1726080857 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\charactermenu.cpp
+1726574603 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\charactermenu.cpp
 	"CharacterMenu.h"
 	"Engine.h"
 	"Input.h"
@@ -987,7 +988,7 @@
 	"GUI.h"
 	"State.h"
 
-1726058239 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\editor.cpp
+1726141150 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\editor.cpp
 	"Editor.h"
 	"Input.h"
 
@@ -999,11 +1000,11 @@
 	<map>
 	<vector>
 
-1726080874 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\factionencounter.cpp
+1726081454 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\factionencounter.cpp
 	"FactionEncounter.h"
 	"LoadFiles.h"
 
-1726080900 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\followermenu.cpp
+1726574805 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\followermenu.cpp
 	"followerMenu.h"
 	"Engine.h"
 	"Input.h"
@@ -1013,7 +1014,7 @@
 	"GUI.h"
 	"State.h"
 
-1726075149 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\game.cpp
+1726567793 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\game.cpp
 	"Game.h"
 	"Engine.h"
 	"Event.h"
@@ -1049,7 +1050,7 @@
 	"GUI.h"
 	"State.h"
 
-1726078204 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\graphicrandomencounter.cpp
+1726579311 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\graphicrandomencounter.cpp
 	"GraphicRandomEncounter.h"
 	"RandomEncounter.h"
 	"Battle.h"
@@ -1067,7 +1068,7 @@
 	"Engine.h"
 	"Game.h"
 
-1726074212 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\mainmenu.cpp
+1726502713 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\mainmenu.cpp
 	"MainMenu.h"
 	"CharacterCreator.h"
 	"LoadGame.h"
@@ -1083,7 +1084,7 @@
 	"Timer.h"
 	"Engine.h"
 
-1723561886 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\randomencounter.cpp
+1726081018 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\randomencounter.cpp
 	"RandomEncounter.h"
 	"SkillComponent.h"
 	"AttributeComponent.h"
@@ -1092,7 +1093,7 @@
 	"Settings.h"
 	"Engine.h"
 
-1726080184 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\state.cpp
+1726574554 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\state.cpp
 	"State.h"
 	"Engine.h"
 	"NPC.h"
@@ -1101,7 +1102,7 @@
 	"Resource.h"
 	"Key.h"
 
-1716455057 source:c:\users\dansa\onedrive\documents\github\untitledgame\timer\timer.cpp
+1726509012 source:c:\users\dansa\onedrive\documents\github\untitledgame\timer\timer.cpp
 	"Timer.h"
 	<SDL.h>
 	<SDL2/SDL.h>
@@ -1122,21 +1123,21 @@
 1726066828 c:\users\dansa\onedrive\documents\github\untitledgame\items\consumable.h
 	"Item.h"
 
-1726080779 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\church.cpp
+1726574680 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\church.cpp
 	"Church.h"
 
 1726071380 c:\users\dansa\onedrive\documents\github\untitledgame\states\church.h
 	"NPC.h"
 	"State.h"
 
-1726071755 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\sheol.cpp
+1726574649 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\sheol.cpp
 	"Sheol.h"
 
 1726071646 c:\users\dansa\onedrive\documents\github\untitledgame\states\sheol.h
 	"NPC.h"
 	"State.h"
 
-1726080863 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\emesh.cpp
+1726574691 source:c:\users\dansa\onedrive\documents\github\untitledgame\states\emesh.cpp
 	"Emesh.h"
 
 1726077951 c:\users\dansa\onedrive\documents\github\untitledgame\states\emesh.h

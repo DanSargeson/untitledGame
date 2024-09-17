@@ -67,8 +67,8 @@ public:
     std::shared_ptr<class Battle> b;
 
     std::shared_ptr<GameTimer> followerTimer;
-    std::shared_ptr<GameTimer> worldTimer;
-    int daysPassed;
+//    std::shared_ptr<GameTimer> worldTimer;
+//    int daysPassed;
     bool prevDay;
     int battleCounter;
 
@@ -204,6 +204,7 @@ protected:
 
     bool exitingBattles;
     bool mainScreen;
+    std::shared_ptr<GameTimer> holdTimer;
     std::shared_ptr<GUI::Text> timerText;
     std::shared_ptr<GUI::Text> worldTimerText;
     std::map<std::string, std::shared_ptr<GUI::Button>> mButtons;

@@ -24,27 +24,28 @@ GraphicRandomEncounter::GraphicRandomEncounter() : State(){
     StateData::GetInstance()->gridSize = 64;
     StateData::GetInstance()->gridSizeF = 64.f;
     this->mapTextureStr = "Assets/tilesBIG3.png";
-	int maxSize = 15;
+	int maxSizeX = 27;   //15
+	int maxSizeY = 15;
 	StateData::GetInstance()->createCamera(2000); ///TODO: MAGIC NUMBER
 
 	tileInfo = std::make_shared<GUI::Tooltip>();
 	tileInfo->setHidden(false);
 
-			this->tilemap = std::make_shared<TileMap>(Engine::GetInstance()->GetRenderer(), StateData::GetInstance()->gridSizeF, maxSize, maxSize, this->mapTextureStr);
+			this->tilemap = std::make_shared<TileMap>(Engine::GetInstance()->GetRenderer(), StateData::GetInstance()->gridSizeF, maxSizeX, maxSizeY, this->mapTextureStr);
 
-            int rando = getRandomValue(1, 100);
-            if(rando <= 60){
-
-                int roll = getRandomValue(1, 5);
-                tilemap->runMazeGenerator();
-                tilemap->placeTreasure(4, roll);
-            }
-            else{
-
-                int roll = getRandomValue(40, 70);
-                this->tilemap->runPerfectMazeGenerator();
-                this->tilemap->placeTreasure(6, roll);
-            }
+//            int rando = getRandomValue(1, 100);
+//            if(rando <= 60){
+//
+//                int roll = getRandomValue(1, 5);
+//                tilemap->runMazeGenerator();
+//                tilemap->placeTreasure(4, roll);
+//            }
+//            else{
+//
+//                int roll = getRandomValue(40, 70);
+//                this->tilemap->runPerfectMazeGenerator();
+//                this->tilemap->placeTreasure(6, roll);
+//            }
 
             tilemap->LoadFromFile("MAP1");
 }
@@ -52,6 +53,7 @@ GraphicRandomEncounter::GraphicRandomEncounter() : State(){
 GraphicRandomEncounter::~GraphicRandomEncounter(){
     //dtor
     backButton->setActive(true);
+    worldTimerText->setPosition(GUI::p2pX(55), GUI::p2pY(20));
     //tilemap->clear();
     //tilemap.reset();
 }
@@ -60,46 +62,46 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
 
     float time = .25f;
 
-    if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
-
-                StateData::GetInstance()->moveCam2(1, time);
-                //StateData::GetInstance()->updateCamera();
-            }
-
-            if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
-
-                    StateData::GetInstance()->moveCam2(2, time);
-            }
-
-
-			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
-
-                StateData::GetInstance()->moveCam2(4, time);
-			}
-
-			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
-
-                StateData::GetInstance()->moveCam2(3, time);
-			}
-
-
-    if(e.type == SDL_KEYUP && e.key.repeat == 0){
-
-            switch(e.key.keysym.sym){
-
-                case SDLK_a: StateData::GetInstance()->moveCam2(FREEZE, 0);
-                break;
-
-                case SDLK_d: StateData::GetInstance()->moveCam2(FREEZE, 0);
-                break;
-
-                case SDLK_w: StateData::GetInstance()->moveCam2(FREEZE, 0);
-                break;
-
-                case SDLK_s: StateData::GetInstance()->moveCam2(FREEZE, 0);
-                break;
-            }
-    }
+//    if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
+//
+//                StateData::GetInstance()->moveCam2(1, time);
+//                //StateData::GetInstance()->updateCamera();
+//            }
+//
+//            if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
+//
+//                    StateData::GetInstance()->moveCam2(2, time);
+//            }
+//
+//
+//			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
+//
+//                StateData::GetInstance()->moveCam2(4, time);
+//			}
+//
+//			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
+//
+//                StateData::GetInstance()->moveCam2(3, time);
+//			}
+//
+//
+//    if(e.type == SDL_KEYUP && e.key.repeat == 0){
+//
+//            switch(e.key.keysym.sym){
+//
+//                case SDLK_a: StateData::GetInstance()->moveCam2(FREEZE, 0);
+//                break;
+//
+//                case SDLK_d: StateData::GetInstance()->moveCam2(FREEZE, 0);
+//                break;
+//
+//                case SDLK_w: StateData::GetInstance()->moveCam2(FREEZE, 0);
+//                break;
+//
+//                case SDLK_s: StateData::GetInstance()->moveCam2(FREEZE, 0);
+//                break;
+//            }
+//    }
 
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_E) && e.key.repeat == 0){
 
@@ -155,7 +157,15 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
         else if(type == 9){
 
             //Engine::GetInstance()->PopState();
-            Engine::GetInstance()->AddState(std::make_shared<Battle>());
+//            if(getData()->isDay){
+//
+//                getMainText()->setString("A mysterious looking rock blocks the path..");
+//
+//            }
+            //else{
+
+                Engine::GetInstance()->AddState(std::make_shared<Battle>());
+            //}
         }
     }
 
@@ -200,36 +210,51 @@ void GraphicRandomEncounter::update(const float& dt)
        if(newX >= tilemap->getMaxSizeGrid().x || newY >= tilemap->getMaxSizeGrid().y){
 
         if(!tileInfo->getHidden()){
-                int type = tilemap->getTileType(tilemap->getMaxSizeGrid().x, tilemap->getMaxSizeGrid().y, 0);
-                std::string msg = tilemap->getTileTypeStr(type);
-                if(msg == "Unknown tile string"){
+//                int type = tilemap->getTileType(tilemap->getMaxSizeGrid().x, tilemap->getMaxSizeGrid().y, 0);
+//                std::string msg = tilemap->getTileTypeStr(type);
+//                if(msg == "Unknown tile string"){
+//
+//                    return;
+//                }
+//                tileInfo->update();
+//                tileInfo->setDisplayText(msg);
 
-                    return;
-                }
-                tileInfo->update();
-                tileInfo->setDisplayText(msg);
+                tileInfo->setHidden(true);
                 tileInfo->update();
             }
        }
        else{
 
-            if(!tileInfo->getHidden()){
-                int type = tilemap->getTileType(newX, newY, 0);
-                std::string msg = tilemap->getTileTypeStr(type);
-                tileInfo->setDisplayText(msg);
-                tileInfo->update();
+            if(tileInfo->getHidden()){
+
+                tileInfo->setHidden(false);
             }
+
+            int type = tilemap->getTileType(newX, newY, 0);
+            std::string msg = tilemap->getTileTypeStr(type);
+            tileInfo->setDisplayText(msg);
+            tileInfo->update();
        }
+
+       getActiveCharacter()->getWorldTimer()->update(dt);
+       calcWorldTime();
 }
 
 void GraphicRandomEncounter::render(){
 
+
+    //TODO: Need to offset where tilemap renders to give a bit of room at the top of the screen...
     tilemap->render(Engine::GetInstance()->GetRenderer(), StateData::GetInstance()->getCamera());
+
+
     tileInfo->render();
 
     for(auto button : mButtons){
 
         button.second->renderButtons();
     }
+
+    worldTimerText->setPosition(GUI::p2pX(55), GUI::p2pY(93));
+    worldTimerText->render();
 }
 
