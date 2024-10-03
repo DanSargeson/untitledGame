@@ -426,7 +426,7 @@ void CharacterCreator::updateEvents(SDL_Event& e){
             saveCharacters();
 //           StateData::GetInstance()->setTutorial(true);
         Engine::GetInstance()->PopState();
-        setSkipIntro(true);
+        setSkipIntro(false);
         Engine::GetInstance()->AddState(std::make_shared<Game>());
         Engine::GetInstance()->AddState(std::make_shared<PlayerDeath>());
 

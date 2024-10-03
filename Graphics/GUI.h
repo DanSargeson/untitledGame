@@ -116,6 +116,7 @@ namespace GUI{
 		std::string getString();
 
 		SDL_Rect getGlobalBounds() { return mOutline; }
+		SDL_Rect* getGlobalBoundsPtr() { return &mOutline; }
 
 		SDL_Rect getPositionRect();
 
@@ -257,6 +258,7 @@ namespace GUI{
 			void setMenuOptions(std::vector<std::string> options, bool dynamic = false, bool item = false, bool wep = false, bool arm = false); //ONLY ONE YOU NEED I BELIEVE!!!!
 			void setPosition();
 
+			inline void reset() { selection = -1; }
 			bool cursorDetached();
 			void setCursorDetached(bool d) { detachCursor = d; }
 

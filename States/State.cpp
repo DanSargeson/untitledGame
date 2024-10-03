@@ -604,6 +604,29 @@ int State::getRandomValue(int low, int high){
                 return randomIndex;
 }
 
+bool State::chancePassed(int baseChance, int skillModifier) {
+
+     // Ensure baseChance + skillModifier doesn't exceed 100%
+    int adjustedChance = baseChance + skillModifier;
+    if (adjustedChance > 100) adjustedChance = 100;
+    if (adjustedChance < 0) adjustedChance = 0;
+
+    // Use std::random_device to obtain a seed for the random number generator
+    std::random_device rd;
+
+    // Use std::mt19937 as the random number generator
+    std::mt19937 gen(rd());
+
+    // Use std::uniform_int_distribution to generate random numbers between 0 and 99
+    std::uniform_int_distribution<> dis(0, 99);
+
+    // Generate a random number
+    int randomValue = dis(gen);
+
+    // Return true if randomValue is less than adjustedChance
+    return randomValue < adjustedChance;
+}
+
 void State::loadCharacters(){
     std::string fileName = "characters.txt";
     ifstream inFile(fileName);

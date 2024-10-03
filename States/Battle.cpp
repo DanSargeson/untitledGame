@@ -1162,18 +1162,18 @@ void Battle::updateEvents(SDL_Event& e){
     menu->updateEvents(e);
     enemyMenu->updateEvents(e);
 
-    if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_ESCAPE)){
+    if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_ESCAPE)&& e.key.repeat == 0){
 
             if(enemyMenu->getActive()){
 
                 menu->setActive(true);
                 enemyMenu->setActive(false);
             }
-            else{
-
-                //RUN AWAY CODE
-                runAway();
-            }
+//            else{
+//
+//                //RUN AWAY CODE
+//               // runAway();
+//            }
 
             return;
 
@@ -1264,7 +1264,7 @@ void Battle::updateEvents(SDL_Event& e){
                 //getDynamicText()->setString("Choose action: ");
             }
 
-            std::cout << "Must be...";
+///            std::cout << "Must be...";
         }
     }
 
@@ -1344,7 +1344,7 @@ void Battle::runAway(){
                             }
 
                         alpha = 255;
-                        getDynamicText()->setString("Got away safely");
+                        ///getDynamicText()->setString("Got away safely");
                         ///getDynamicText()->render();
                         //SDL_Delay(100);
                       //  Engine::GetInstance()->PopState();

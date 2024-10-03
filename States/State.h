@@ -172,6 +172,7 @@ public:
     void calcWorldTime();
 
     int getRandomValue(int low, int high);
+    bool chancePassed(int percentChance, int skillModifier = 0);
 
     void loadCharacters();
     virtual void refreshGUI();

@@ -120,7 +120,6 @@
 		<Unit filename="States/CharacterCreator.h" />
 		<Unit filename="States/CharacterMenu.cpp" />
 		<Unit filename="States/CharacterMenu.h" />
-		<Unit filename="States/Church" />
 		<Unit filename="States/Church.cpp" />
 		<Unit filename="States/Church.h" />
 		<Unit filename="States/Editor.cpp" />
@@ -151,6 +150,8 @@
 		<Unit filename="States/Sheol.h" />
 		<Unit filename="States/State.cpp" />
 		<Unit filename="States/State.h" />
+		<Unit filename="States/Unk.cpp" />
+		<Unit filename="States/Unk.h" />
 		<Unit filename="Timer/Timer.cpp" />
 		<Unit filename="Timer/Timer.h" />
 		<Unit filename="main.cpp" />

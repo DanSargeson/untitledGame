@@ -313,28 +313,28 @@ std::string LoadFiles::getDialogue(std::string faction, int id){
     std::string msg = "";
     //msg = dialogueMap.at(faction).at(id);
 
-//    switch(id){
-//
-//    case 0:
-//        faction = "red";
-//        break;
-//
-//    case 1:
-//        faction = "Orange";
-//        break;
-//
-//    case 3:
-//        faction = "Yellow";
-//        break;
-//
-//        /etc...
-//    }
+    switch(id){
+
+    case 0:
+        faction = "red";
+        break;
+
+    case 1:
+        faction = "Orange";
+        break;
+
+    case 3:
+        faction = "Yellow";
+        break;
+
+        ///etc...
+    }
 
     ///TODO Hacky as fuck, fix this
-    if(id == 0){
-
-        faction = "Red";
-    }
+//    if(id == 0){
+//
+//        faction = "Red";
+//    }
     auto factionIter = dialogueMap.find(faction);
     if (factionIter != dialogueMap.end()) {
         auto dialogueIter = factionIter->second.find(id);

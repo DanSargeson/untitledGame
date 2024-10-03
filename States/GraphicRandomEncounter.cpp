@@ -4,6 +4,7 @@
 #include "Church.h"
 #include "Sheol.h"
 #include "Emesh.h"
+#include "Unk.h"
 
 GraphicRandomEncounter::GraphicRandomEncounter() : State(){
     //ctor
@@ -53,7 +54,6 @@ GraphicRandomEncounter::GraphicRandomEncounter() : State(){
 GraphicRandomEncounter::~GraphicRandomEncounter(){
     //dtor
     backButton->setActive(true);
-    worldTimerText->setPosition(GUI::p2pX(55), GUI::p2pY(20));
     //tilemap->clear();
     //tilemap.reset();
 }
@@ -62,46 +62,46 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
 
     float time = .25f;
 
-//    if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
-//
-//                StateData::GetInstance()->moveCam2(1, time);
-//                //StateData::GetInstance()->updateCamera();
-//            }
-//
-//            if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
-//
-//                    StateData::GetInstance()->moveCam2(2, time);
-//            }
-//
-//
-//			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
-//
-//                StateData::GetInstance()->moveCam2(4, time);
-//			}
-//
-//			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
-//
-//                StateData::GetInstance()->moveCam2(3, time);
-//			}
-//
-//
-//    if(e.type == SDL_KEYUP && e.key.repeat == 0){
-//
-//            switch(e.key.keysym.sym){
-//
-//                case SDLK_a: StateData::GetInstance()->moveCam2(FREEZE, 0);
-//                break;
-//
-//                case SDLK_d: StateData::GetInstance()->moveCam2(FREEZE, 0);
-//                break;
-//
-//                case SDLK_w: StateData::GetInstance()->moveCam2(FREEZE, 0);
-//                break;
-//
-//                case SDLK_s: StateData::GetInstance()->moveCam2(FREEZE, 0);
-//                break;
-//            }
-//    }
+    if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
+
+                StateData::GetInstance()->moveCam2(1, time);
+                //StateData::GetInstance()->updateCamera();
+            }
+
+            if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
+
+                    StateData::GetInstance()->moveCam2(2, time);
+            }
+
+
+			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
+
+                StateData::GetInstance()->moveCam2(4, time);
+			}
+
+			if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
+
+                StateData::GetInstance()->moveCam2(3, time);
+			}
+
+
+    if(e.type == SDL_KEYUP && e.key.repeat == 0){
+
+            switch(e.key.keysym.sym){
+
+                case SDLK_a: StateData::GetInstance()->moveCam2(FREEZE, 0);
+                break;
+
+                case SDLK_d: StateData::GetInstance()->moveCam2(FREEZE, 0);
+                break;
+
+                case SDLK_w: StateData::GetInstance()->moveCam2(FREEZE, 0);
+                break;
+
+                case SDLK_s: StateData::GetInstance()->moveCam2(FREEZE, 0);
+                break;
+            }
+    }
 
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_E) && e.key.repeat == 0){
 
@@ -123,6 +123,12 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
         int x, y = 0;
     SDL_GetMouseState(&x, &y);
 
+    int offX = 0;
+	int offY = 0;
+
+	x -= offX;
+	y -= offY;
+
             x /= StateData::GetInstance()->gridSize;
             y /= StateData::GetInstance()->gridSize;
 
@@ -136,6 +142,8 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
 
         ///TODO: HERE IS WHERE YOU HAVE THE NUMBERS LOCKED (SO SHOULD BE SIMILAR FOR THE START OF THE GAME (NEED TO CHANGE IT IN TILEMAP AS WELL))
         ///TODO:: Bring the bellow back
+
+        ///TODO: THIS SHOULD REALLY BE A SWITCH....
         //if(type == 2 || type == 3 || type == 4){
             if(type == 2){ ///PUB
                 int r = getRandomValue(2, 8);       ///TODO make a "getRandomFaction" function which checks for faction unlocks...
@@ -152,6 +160,10 @@ void GraphicRandomEncounter::updateEvents(SDL_Event& e){
         else if(type == TILE::EMESH_TILE){
 
             Engine::GetInstance()->AddState(std::make_shared<Emesh>());
+        }
+        else if(type == TILE::UNK_TILE){
+
+            Engine::GetInstance()->AddState(std::make_shared<Unk>());
         }
 
         else if(type == 9){
@@ -196,6 +208,12 @@ void GraphicRandomEncounter::update(const float& dt)
     int x, y = 0;
     SDL_GetMouseState(&x, &y);
 
+    int offX = 0;
+	int offY = 0;
+
+	x -= offX;
+	y -= offY;
+
             ///CONTROLS THE MOUSE GRID THING???
             int gr = StateData::GetInstance()->gridSize;
             x /= StateData::GetInstance()->gridSize;
@@ -210,14 +228,6 @@ void GraphicRandomEncounter::update(const float& dt)
        if(newX >= tilemap->getMaxSizeGrid().x || newY >= tilemap->getMaxSizeGrid().y){
 
         if(!tileInfo->getHidden()){
-//                int type = tilemap->getTileType(tilemap->getMaxSizeGrid().x, tilemap->getMaxSizeGrid().y, 0);
-//                std::string msg = tilemap->getTileTypeStr(type);
-//                if(msg == "Unknown tile string"){
-//
-//                    return;
-//                }
-//                tileInfo->update();
-//                tileInfo->setDisplayText(msg);
 
                 tileInfo->setHidden(true);
                 tileInfo->update();
@@ -225,15 +235,23 @@ void GraphicRandomEncounter::update(const float& dt)
        }
        else{
 
+            if(newX < 0 || newY < 0){
+
+                tileInfo->setHidden(true);
+            }
+            else{
+
+
             if(tileInfo->getHidden()){
 
                 tileInfo->setHidden(false);
             }
 
-            int type = tilemap->getTileType(newX, newY, 0);
-            std::string msg = tilemap->getTileTypeStr(type);
-            tileInfo->setDisplayText(msg);
-            tileInfo->update();
+                int type = tilemap->getTileType(newX, newY, 0);
+                std::string msg = tilemap->getTileTypeStr(type);
+                tileInfo->setDisplayText(msg);
+                tileInfo->update();
+            }
        }
 
        getActiveCharacter()->getWorldTimer()->update(dt);
@@ -246,7 +264,6 @@ void GraphicRandomEncounter::render(){
     //TODO: Need to offset where tilemap renders to give a bit of room at the top of the screen...
     tilemap->render(Engine::GetInstance()->GetRenderer(), StateData::GetInstance()->getCamera());
 
-
     tileInfo->render();
 
     for(auto button : mButtons){
@@ -254,7 +271,6 @@ void GraphicRandomEncounter::render(){
         button.second->renderButtons();
     }
 
-    worldTimerText->setPosition(GUI::p2pX(55), GUI::p2pY(93));
     worldTimerText->render();
 }
 

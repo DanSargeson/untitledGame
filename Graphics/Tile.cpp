@@ -244,11 +244,13 @@ void Tile::Render(SDL_Renderer* target, SDL_Rect cam/*, sf::Shader* shader, cons
 	shape.w = 64;
 	shape.h = 64;
 
+
+	///TODO: THis offsets the tile...
 	int offX = 0;
 	int offY = 0;
 
+    texture->render(target, shape.x + offX, shape.y + offY, &this->textureRect, cam);
 
-    texture->render(target, shape.x, shape.y, &this->textureRect, cam);
 
 	//if (shader) {
 

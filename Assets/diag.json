@@ -264,6 +264,64 @@
 
     },
     {
+	    "id": 666,
+	    "faction": "Lucifer",
+	    "dialogueId": 1,
+	    "text": "Hmph",
+	    "nextDialogue": 666,
+	    "responses":[]
+    },
+    {
+	    "id": 1,
+	    "faction": "Lucifer",
+	    "dialogueId": 1,
+	    "text": "What brings you to my domain?",
+	    "nextDialogue": 3,
+	    "responses":[
+		{
+	    
+		   "id": 1,
+		   "text": "I'm just looking around",
+		   "nextDialogue": 4 
+	    },
+	    {
+	    
+		    "id": 2,
+		    "text": "I'm here to serve you master",
+		    "nextDialogue": 3
+	    }
+	    ]
+    },
+    {
+	    "id": 4,
+	    "faction": "Lucifer",
+	    "dialogueId": 4,
+	    "text": "You should leave, before I get bored and flay you",
+	    "nextDialogue": 0,
+	    "responses": [
+	   	{
+			"id": 1,
+			"text": "Wow, okay",
+			"nextDialogue": 666
+		} 
+	    ]
+    },
+    {
+	    "id": 3,
+	    "faction": "Lucifer",
+	    "dialogueId": 3,
+	    "text": "We shall see, stand before me so I may test your faith",
+	    "nextDialogue": 9,
+	    "responses": [
+	    	
+		    {
+			    "id": 1,
+			    "text": "Yes my lord",
+			    "nextDialogue": 666
+		    }
+	    ]
+    },
+    {
 	    "id": 10020120,
 	    "faction": "TEMPLATE",
 	    "dialogueId": 100123232323121,

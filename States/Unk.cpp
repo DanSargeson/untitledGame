@@ -1,9 +1,9 @@
-#include "Sheol.h"
+#include "Unk.h"
 
-Sheol::Sheol() : State(){
+Unk::Unk() : State(){
 
-    Yam = std::make_shared<NPC>(1, 100, 1);
-    Yam->setName("Yam");
+    apep = std::make_shared<NPC>(1, 100, 1);
+    apep->setName("Apep");
 
     backButton->setActive(false);
 
@@ -19,7 +19,7 @@ Sheol::Sheol() : State(){
     randomNPC = std::make_shared<NPC>(0, getActiveCharacter()->getLevel(), getRandomValue(2, 8));
 }
 
-Sheol::~Sheol(){
+Unk::~Unk(){
 
     backButton->setActive(true);
 }
@@ -27,16 +27,16 @@ Sheol::~Sheol(){
 
 
 
-void Sheol::update(const float& dt){
+void Unk::update(const float& dt){
 
     std::string msg = "";
     if(getData()->isDay){
 
-     msg = Yam->getName() + " stands in front of the crashing waves.";
+     msg = apep->getName() + " looks at ease.";
     }
     else{
 
-        msg = "You see a lighthouse in the distance, but how to reach it?";
+        msg = apep->getName() + " looks furious.";
     }
     getMainText()->setString(msg, true);
 
@@ -45,7 +45,7 @@ void Sheol::update(const float& dt){
     calcWorldTime();
 }
 
-void Sheol::updateEvents(SDL_Event& e){
+void Unk::updateEvents(SDL_Event& e){
 
     if(mButtons["BACK"]->isPressed(e.button)){
 
@@ -57,7 +57,7 @@ void Sheol::updateEvents(SDL_Event& e){
 
 
 
-void Sheol::render(){
+void Unk::render(){
 
     getMainText()->render();
 

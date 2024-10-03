@@ -183,21 +183,14 @@ void Texture::renderToViewPort(SDL_Renderer* rend, int x, int y, SDL_Rect* clip,
 
     SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
 
-	//SDL_Rect result = cam;
-
-	//if(SDL_IntersectRect(&cam, &renderQuad, &result)){
-
-      //  SDL_RenderCopy(rend, mTexture, clip, &renderQuad);
-	//}
-
 	SDL_RenderCopy(rend, mTexture, clip, viewport);
 }
 
 void Texture::render(SDL_Renderer* rend, int x, int y, SDL_Rect * clip, SDL_Rect cam, double angle, SDL_Point * centre, SDL_RendererFlip){
 
 
-	mX = x; //+ cam.x;
-	mY = y; //+ cam.y;
+	mX = x - cam.x;
+	mY = y - cam.y;
 	SDL_Rect renderQuad = { mX,  mY, mWidth, mHeight };
 
 	if (clip) {
