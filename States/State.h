@@ -81,6 +81,7 @@ public:
      int minutes;
      int displayHours;
      bool isDay;
+     float timeScale = 1.0f;
 
 
     static std::atomic<bool> battleThreadRunning;
@@ -167,7 +168,6 @@ public:
     virtual void updateEvents(SDL_Event &e);
     virtual void updateButtons();
     virtual void render() = 0;
-
 
     void calcWorldTime();
 

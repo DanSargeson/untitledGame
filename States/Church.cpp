@@ -1,5 +1,10 @@
 #include "Church.h"
 
+int Church::basinLevel = 4;  ///Basin starts full and gets 4 uses..
+int Church::timeBasinEmptied = 0; ///Not used for now..
+int Church::dayBasinEmptied = 0;
+
+
 Church::Church() : State(){
 
     ///HERE BE Dialogue stuff..
@@ -8,6 +13,12 @@ Church::Church() : State(){
     m_fileName = "Assets/factionQuests.txt";
 
     ///"Assets/newDialogue.txt"
+
+    if(getActiveCharacter()->getBasinLevel() != basinLevel){
+
+        basinLevel = getActiveCharacter()->getBasinLevel();
+        dayBasinEmptied = getActiveCharacter()->getDayBasinEmptied();
+    }
 
     json_file = "Assets/diag.json";
 
@@ -20,6 +31,7 @@ Church::Church() : State(){
         HERE ENDETH THE DIALOGUE
     */
 
+    firstFlag = false;
     satan = std::make_shared<NPC>(1, 100, 1);
     satan->setName("Lucifer");
 //    atPulpit = false;
@@ -32,7 +44,6 @@ Church::Church() : State(){
                 "\n\nMetallic benches fill the main hall. The floor seems to writhe as you step on it.";
     getMainText()->setString(mainMsg, true);
     ///
-    basinLevel = 4;
 
     ///TODO BRING THESE BACK...
     ops.clear();
@@ -58,6 +69,76 @@ Church::~Church(){
 void Church::update(const float& dt){
 
     //mButtons["BACK"]->update();
+
+    if(basinLevel == 0 && getActiveCharacter()->getDaysPassed() > dayBasinEmptied){ //Basin level resets at midnight
+
+        basinLevel = 4;
+        dayBasinEmptied = 0;
+        getActiveCharacter()->setChurchBasinLevels(4, 0);
+    }
+
+    if(currentArea == AREA::pulpit && !inDialogue){
+
+        std::string msg = "";
+        if (!getData()->isDay) {
+            msg = satan->getName() + " sits at the front of the church looking bored.";
+        }
+        else{
+            msg = "No one is around, maybe you should try at night??";
+        }
+        getMainText()->setString(msg, true);
+
+        ///HERE == THIS SHOULD DEFINITELY OO INTO SOME KIND OF DAY/NIGHT CLASS, take 2 integers to check if it is currently X time....
+        // Check if it's midnight and increment the day counter
+            if (static_cast<int>(getData()->hours) == 18 && getData()->minutes == 0) {
+                if (!firstFlag) {  // First encounter with night
+
+                    firstFlag = true; // Flag to prevent multiple increments
+                    updatePulpitOptions();
+                }
+            }
+            else if(static_cast<int>(getData()->hours) == 6 && getData()->minutes == 0){
+
+                if (!firstFlag) {  // First encounter with day
+
+                    firstFlag = true; // Flag to prevent multiple increments
+                    updatePulpitOptions();
+                }
+            }
+            else {
+                firstFlag = false; // Reset flag when time moves past 00:00
+            }
+        ///HERE
+    }
+
+    if(currentArea == AREA::basin){
+
+        std::string msg = "The basin is filthy, there is a red viscous liquid shimmering in the bowl.\nThe Basin is";
+        switch(basinLevel){
+
+        case 0:
+            msg += " empty";
+            break;
+
+        case 1:
+            msg += " nearly empty";
+            break;
+
+        case 2:
+            msg += " about half full";
+            break;
+
+        case 3:
+            msg += " mostly full";
+            break;
+
+        case 4:
+            msg += " full to the brim";
+            break;
+        }
+        getMainText()->setString(msg, true);
+    }
+
     backButton->update();
     getActiveCharacter()->getWorldTimer()->update(dt);
     calcWorldTime();
@@ -102,9 +183,7 @@ void Church::runMenuSelection() {
             menu->reset();
             currentArea = AREA::pulpit;
             updatePulpitOptions();
-            handlePulpit();
-
-            return;
+            //handlePulpit();
         }
         else{
 
@@ -153,16 +232,26 @@ void Church::handlePulpit() {
 
     if(!inDialogue){
 
+            handleDialogue();
+    }
+    else{
+
+        runMenuSelection();
+    }
+}
+
+void Church::handleDialogue(){
+
     if (menu->getChoice() == 0) { // Speak or go to basin based on time of day
         if (!getData()->isDay) {
 
             inDialogue = true;
             getMainText()->setString(file->getDialogue("Lucifer", 1), true, (getMainText()->getGlobalBounds().w - GUI::p2pXi(5)));
             menu->setMenuOptions(file->getFirstResponses("Lucifer", 1), true);
-            //getMainText()->setString("Here is where you speak to the NPC", true);
+
         } else {
             currentArea = AREA::basin;
-            menu->reset();  // Reset before moving to another area
+            menu->reset();
             updateBasinOptions();
         }
     } else if (menu->getChoice() == 1) { // Back to entrance if DAY, otherwise goes to basin...
@@ -174,20 +263,15 @@ void Church::handlePulpit() {
         }
         else{
             currentArea = AREA::basin;
-            menu->reset();  // Reset before moving to another area
+            menu->reset();
             updateBasinOptions();
         }
     }
     else{
-
+        ///DIALOGUE BIT HERE
         currentArea = AREA::entrance;
-        menu->reset();  // Reset menu for new area
+        menu->reset();
         handleEntrance();
-    }
-    }
-    else{
-
-        runMenuSelection();
     }
 }
 
@@ -205,6 +289,12 @@ void Church::handleBasin() {
             }
 
             basinLevel--;
+            if(basinLevel == 0){
+
+                dayBasinEmptied = getActiveCharacter()->getDaysPassed();
+            }
+
+            getActiveCharacter()->setChurchBasinLevels(basinLevel, dayBasinEmptied);
         }
         else{
 
@@ -227,49 +317,21 @@ void Church::handleBasin() {
 }
 
 void Church::updatePulpitOptions() {
-    std::string msg, speak;
+    std::string speak;
     std::vector<std::string> ops;
 
     if (!getData()->isDay) {
-        msg = satan->getName() + " sits at the front of the church looking bored.";
+
         speak = "Speak to " + satan->getName();
         ops.push_back(speak);
-    } else {
-        msg = "No one is around, maybe you should try at night??";
     }
-
     ops.push_back("Approach the basin");
     ops.push_back("Back to entrance");
     menu->setMenuOptions(ops, true);
-    getMainText()->setString(msg, true);
 }
 
 void Church::updateBasinOptions() {
 
-
-    std::string msg = "The basin is filthy, there is a red viscous liquid shimmering in the bowl.\nThe Basin is";
-    switch(basinLevel){
-
-    case 0:
-        msg += " empty";
-        break;
-
-    case 1:
-        msg += " nearly empty";
-        break;
-
-    case 2:
-        msg += " about half full";
-        break;
-
-    case 3:
-        msg += " mostly full";
-        break;
-
-    case 4:
-        msg += " full to the brim";
-        break;
-    }
 
     //std::vector<std::string> ops = {"Drink the liquid", "Approach the pulpit", "Back to entrance"};
     ops.clear();
@@ -278,7 +340,6 @@ void Church::updateBasinOptions() {
     ops.push_back("Approach the pulpit");
     ops.push_back("Back to the entrance");
     menu->setMenuOptions(ops, true);
-    getMainText()->setString(msg, true);
 }
 
 void Church::render(){

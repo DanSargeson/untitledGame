@@ -396,7 +396,14 @@ void StateData::initTimeCycle(){
     }
 
     prevDay = true;
-    dayCycle = 900.0f; // 900 seconds for a full cycle
+//    if(getActiveCharacter()->getTimeModifier() == 0){ ///TODO ADD THIS...
+
+        dayCycle = 50.0f; // 900 seconds for a full cycle ... THIS IS THE MODIFIER, ADD A set day cycle for the player....
+//    }
+//    else{
+//
+//        dayCycle = getActiveCharacter()->getTimeModifier();
+//    }
 }
 
 void StateData::startBattleThread()
@@ -925,6 +932,19 @@ void State::loadCharacters(){
                 temp->setDaysPassed(daysPassed);
 			}
 
+			int basinLevel, basinDay = 0;
+			strs.clear();
+			line.clear();
+			getline(inFile, line);
+			strs.str(line);
+            while(
+			strs >> basinLevel
+			>> basinDay
+			){
+
+                temp->setChurchBasinLevels(basinLevel, basinDay);
+			}
+
 
                 ///TODO: Check this...
 				///temp->setInv(tempItems);
@@ -972,6 +992,7 @@ void State::saveCharacters()
 			outFile <<	StateData::GetInstance()->characters[i]->getInvAsStringSave() << "\n";
 			outFile << StateData::GetInstance()->characters[i]->getFollowersStrSave() << "\n";
 			outFile << StateData::GetInstance()->characters[i]->getWorldTimer()->saveTimer() << " " << getData()->characters[i]->getDaysPassed() << "\n";
+			outFile << StateData::GetInstance()->characters[i]->getBasinLevel() << " " << StateData::GetInstance()->characters[i]->getDayBasinEmptied() << "\n";
 		}
     }
 

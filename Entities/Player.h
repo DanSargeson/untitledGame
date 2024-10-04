@@ -25,28 +25,11 @@ private:
 
     vector<shared_ptr<Entity>> followers;
 
+    int dayChurhBsainEmptied;
+    int churchBasinLevel;
+
 	string name;
 	int level;
-//	int exp;
-//	int expNext;
-//	int hp;
-//	int hpMax;
-//	int stamina;
-//	int staminaMax;
-//	int damageMin;
-//	int damageMax;
-//	int defence;
-//	int accuracy;
-//	int luck;
-//
-//	int strength;
-//	int vitality;
-//	int dexterity;
-//	int intelligence;
-//
-//	int statPoints;
-//	int skillPoints;
-
 	int corruption;
 
 	int daysPassed;
@@ -58,6 +41,13 @@ public:
     Player(string n, int dt, int g, int lvl, int exp, int vit, int str, int dex, int agi,
                      int intel, int charis, int luck, int hp,  int corr, int attriPoints = 0, bool reset = true);
     virtual ~Player();
+
+
+    /* SAVE AREA SPECIFIC DATA, THIS SHOULD DEFINTELY BE SPLIT AT SOME POINT... */
+
+    inline void setChurchBasinLevels(int level, int day) { churchBasinLevel = level; dayChurhBsainEmptied = day; }
+    inline int getBasinLevel() { return churchBasinLevel; }
+    inline int getDayBasinEmptied() { return dayChurhBsainEmptied; }
 
     //Functions
     void initialise(string name);

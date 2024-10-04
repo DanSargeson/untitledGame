@@ -222,7 +222,7 @@ void FollowerMenu::update(const float& dt){
     backButton->update();
 
     getActiveCharacter()->getWorldTimer()->update(dt);
-    calcWorldTime();
+//    calcWorldTime();
 
     if(!getActiveCharacter()->getFollowers().empty()){
 

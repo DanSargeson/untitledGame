@@ -26,6 +26,7 @@ public:
     void handleBasin();
     void handleEntrance();
     void handlePulpit();
+    void handleDialogue();
 
     void updateBasinOptions();
     void updatePulpitOptions();
@@ -37,9 +38,12 @@ private:
 //    bool atBasin;
     int currentArea;
     const char* mainMsg;
-    int basinLevel;
+    static int basinLevel;
+    static int dayBasinEmptied;
+    static int timeBasinEmptied;
 
     bool inDialogue;
+    bool firstFlag;
 
 
     ///FILES/DIAG STUFF

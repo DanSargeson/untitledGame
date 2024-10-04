@@ -51,6 +51,9 @@ void Player::increaseSkill(int i){
 Player::Player() : Entity(){
     distanceTravelled = 0;
 
+    churchBasinLevel = 0;
+    dayChurhBsainEmptied = 0;
+
     gold = 0;
     name = "";
 //    level = 0;
@@ -96,6 +99,9 @@ Player::Player(string n, int dt, int g, int lvl, int exp, int vit, int str, int 
     this->gold = g;
     corruption = corr;
 
+    churchBasinLevel = 0;
+    dayChurhBsainEmptied = 0;
+
    //this->createAttributeComponent(level, true, false);
    //attributeComponent->setAttributes(vit, str, dex, agi, intel, charis, luck);
    //attributeComponent->setAttributePoints(attriPoint);
@@ -126,6 +132,9 @@ void Player::loadBonuses(){
 Player::Player(string name, int dt) : Entity(){
 //    this->name = name;
     this->distanceTravelled = dt;
+
+    churchBasinLevel = 0;
+    dayChurhBsainEmptied = 0;
 
     this->createAttributeComponent(0, true);
 	this->createSkillComponent();
