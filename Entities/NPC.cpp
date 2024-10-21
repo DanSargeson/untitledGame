@@ -156,7 +156,7 @@ NPC::NPC(int faction, bool questGiver, std::string fileName){
 	this->questGiver = questGiver;
 	this->dialogue = dialogue;
 	this->createFactionComponent();
-	this->createDialogueComponent();
+//	this->createDialogueComponent();
 
 	textFileName = fileName;
 	this->factionComponent->calculateReputation(this->faction);

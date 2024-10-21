@@ -34,8 +34,8 @@ public:
 	void runTutorial();
 	void render();
 
-//	void startBattleThread();
-//	void runFollowerBattles();
+    void startBattleThread();
+	void runFollowerBattles();
 
 	void initButtons();
 	void refreshGUI();
@@ -46,6 +46,13 @@ private:
     std::shared_ptr<GUI::Text> mainText;
     std::queue<std::function<void()>> battleTasks;
     std::unique_ptr<Texture> bgTexture;
+
+    std::thread battleThread;
+    std::mutex mtx;
+    std::condition_variable cv;
+    std::shared_ptr<class Battle> b;
+
+    int battleCounter;
 
     int lastScreen;
 //    int battleCounter;

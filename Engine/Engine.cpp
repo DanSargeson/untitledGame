@@ -83,6 +83,11 @@ void Engine::Update(float dt){
 
             mStates[currentState]->update(dt);
         }
+
+        if(StateData::GetInstance()->battleThreadStart.load()){
+
+            mStates[1]->startBattleThread();
+        }
     }
     else{
 

@@ -10,6 +10,7 @@
 StateData* StateData::s_Instance = nullptr;
 std::atomic<bool> StateData::battleThreadRunning = false;
 std::atomic<bool> StateData::battleThreadPaused = false;
+std::atomic<bool> StateData::battleThreadStart = false;
 
 void StateData::initFonts(){
 
@@ -406,17 +407,17 @@ void StateData::initTimeCycle(){
 //    }
 }
 
-void StateData::startBattleThread()
-
-    {
-
-    std::lock_guard<std::mutex> lock(mtx);
-    if(!battleThreadRunning){
-
-      battleThreadRunning.store(true);
-      battleThread = std::thread(&StateData::startFollowerAction, this);
-    }
-}
+//void StateData::startBattleThread()
+//
+//    {
+//
+//    std::lock_guard<std::mutex> lock(mtx);
+//    if(!battleThreadRunning.load()){
+//
+//      battleThreadRunning.store(true);
+//      battleThread = std::thread(&StateData::runFollowerBattles, this);
+//    }
+//}
 
 ///TODO: Need a folower action manager function which determines follower type and runs appropriate thing.. Battle/Search for items etc.
 
@@ -429,162 +430,163 @@ void StateData::startFollowerAction(){
     case NPC_TYPE::ALCHEMIST:   ///ALCHEMIST IS ACTUALLY DOCTOR...(search for health)
         dynamicText->setString("Search for potions here");
         battleThreadRunning.store(false);
-        battleThread.detach();
+        //battleThread.detach();
         break;
 
     case NPC_TYPE::SCOUT:
-        runFollowerBattles();
+        //startBattleThread();
+        battleThreadRunning.store(true);
         break;
 
 
     case NPC_TYPE::BARD:
         dynamicText->setString("This is BARD npc type...");
         battleThreadRunning.store(false);
-        battleThread.detach();
+        //battleThread.detach();
         break;
 
     case NPC_TYPE::BLACKSMITH:  ///SEARCH FOR ORES
         dynamicText->setString("This is BLACKSMITH npc type...");
         battleThreadRunning.store(false);
-        battleThread.detach();
+      //  battleThread.detach();
         break;
 
     case NPC_TYPE::COOK:        ///COOK IS LOCKSMITH... (SEARCH FOR KEYS)
         dynamicText->setString("This is COOK npc type...");
         battleThreadRunning.store(false);
-        battleThread.detach();
+       // battleThread.detach();
         break;
 
     case NPC_TYPE::INNKEEPER:
         dynamicText->setString("This is INNKEEPER npc type...");
         battleThreadRunning.store(false);
-        battleThread.detach();
+        //battleThread.detach();
         break;
 
     case NPC_TYPE::LIBRARIAN:   ///THIS IS ALCEMIST... (Search for potions)
         dynamicText->setString("This is LIBRARIAN npc type...");
         battleThreadRunning.store(false);
-        battleThread.detach();
+        //battleThread.detach();
         break;
 
     default:
         battleThreadRunning.store(false);
-        battleThread.detach();
+        //battleThread.detach();
         break;
     }
 }
 
-void StateData::runFollowerBattles(){
-
-        std::cout << "TOP OF RUN FOLLOWER BATTLE" << std::endl;
-
-
-        b = std::make_shared<Battle>(true);
-        battleCounter = 0;
-
-        bool death = false;
-        int loopCounter = 0;
-
-        while (battleThreadRunning.load()) {
-
-                std::unique_lock<std::mutex> lock(mtx);
-
-                if(battleThreadPaused.load()){
-
-                    followerTimer->pause();
-                    cv.wait(lock, [this]{return !battleThreadPaused.load();});
-                    followerTimer->unpause();
-                }
-
-
-                ///Replaces the sleep_for functionality...
-                if(cv.wait_for(lock, std::chrono::milliseconds(1000), [this] { return !battleThreadRunning; })){
-                    break;
-                }
-        bool battleFinished = false;
-        int timeToAdventure = 30000;  ///
-
-        if(followerTimer->getTicks() <= timeToAdventure){  ///
-
-        int test = getActiveCharacter()->getActiveFollower()->getLevel();
-
-            if(getActiveCharacter()->getActiveFollower()->isAlive()){
-
-                    if(b->getEnemies().size() <= 0){
-
-                    std::string msg = "Follower defeated all enemies. New battle begins!";
-                    battleCounter++;
-                    std::cout << msg << std::endl;
-                    std::cout << std::to_string(battleCounter) << std::endl;
-                    if(followerTimer->getTicks() <= timeToAdventure){
-
-                        b->spawnEnemies();
-                    }
-                }
-                else{
-                        if (battleCounter >= 5) {
-                            battleFinished = true;
-                            battleThreadRunning.store(false);
-
-                            return;
-                        }
-                    b->followersAutoBattle();
-                }
-            }
-
-                if(!getActiveCharacter()->getActiveFollower()->isAlive()){   ///FOLLOWER DIED
-                    battleThreadRunning.store(false);
-                    cv.notify_all();
-                    battleFinished = true;
-                    followerTimer->stop();
-                    battleCounter = 0;
-                    std: string s = followerScreenText->getString();
-                    s += "\nA brave soul returns to the void. Follower Lost.";
-                    followerScreenText->setString(s, true);
-                    getActiveCharacter()->removeFollower();
-                    battleCounter++;
-                    death = true;
-                    std::cout << "THIS IT THE FOLLOWE DIES" << std::endl;
-                    ///return;
-                }
-            }   ///ND IF TICKS < timetoAdventure
-            else{       ///TIME RAN OUT (BattleCounter
-
-                    ///EXIT BATTLE
-                    //battleCounter++;
-                    battleThreadRunning.store(false);
-                    battleFinished = true;
-                    followerTimer->stop();
-                    std::string s = "";
-                    if(followerScreenText->getString() != ""){
-
-                        s = followerScreenText->getString();
-                    }
-                    std::string msg = "\nTime ran out. Your follower won " + std::to_string(battleCounter);
-                    msg += (battleCounter == 1) ? " battle" : " battles!";
-//                    if(battleCounter == 0){
+//void StateData::runFollowerBattles(){
 //
-//                        msg += " Try using EXP potions to level the follower!";
+//        std::cout << "TOP OF RUN FOLLOWER BATTLE" << std::endl;
+//
+//
+//        b = std::make_shared<Battle>(true);
+//        battleCounter = 0;
+//
+//        bool death = false;
+//        int loopCounter = 0;
+//
+//        while (battleThreadRunning.load()) {
+//
+//                std::unique_lock<std::mutex> lock(mtx);
+//
+//                if(battleThreadPaused.load()){
+//
+//                    followerTimer->pause();
+//                    cv.wait(lock, [this]{return !battleThreadPaused.load();});
+//                    followerTimer->unpause();
+//                }
+//
+//
+//                ///Replaces the sleep_for functionality...
+//                if(cv.wait_for(lock, std::chrono::milliseconds(1000), [this] { return !battleThreadRunning; })){
+//                    break;
+//                }
+//        bool battleFinished = false;
+//        int timeToAdventure = 30000;  ///
+//
+//        if(followerTimer->getTicks() <= timeToAdventure){  ///
+//
+//        int test = getActiveCharacter()->getActiveFollower()->getLevel();
+//
+//            if(getActiveCharacter()->getActiveFollower()->isAlive()){
+//
+//                    if(b->getEnemies().size() <= 0){
+//
+//                    std::string msg = "Follower defeated all enemies. New battle begins!";
+//                    battleCounter++;
+//                    std::cout << msg << std::endl;
+//                    std::cout << std::to_string(battleCounter) << std::endl;
+//                    if(followerTimer->getTicks() <= timeToAdventure){
+//
+//                        b->spawnEnemies();
 //                    }
-                    s += msg;
-                    followerScreenText->setString(s, true);
-                    //HITS AFTER FOLLOWER DIES...
-                    std::cout << "TIME RAN OUT: BROKE FIRST LOOP" << std::endl;
-                    battleCounter = 0;
-                }
-        //HITS HERE WHEN FOLLOWER FIRST DIES>......
-                loopCounter++;
-                if (loopCounter == 2) {
-
-                    int check = 0;
-                }
-                std::cout << std::to_string(loopCounter) << " LOOP OF BATTLETHREADRUNNING!" << std::endl;
-            //}
-        }
-
-        std::cout << "EXITING BATTLE THREAD" << std::endl;
-        followerTimer->stop();
-}
+//                }
+//                else{
+//                        if (battleCounter >= 5) {
+//                            battleFinished = true;
+//                            battleThreadRunning.store(false);
+//
+//                            return;
+//                        }
+//                    b->followersAutoBattle();
+//                }
+//            }
+//
+//                if(!getActiveCharacter()->getActiveFollower()->isAlive()){   ///FOLLOWER DIED
+//                    battleThreadRunning.store(false);
+//                    cv.notify_all();
+//                    battleFinished = true;
+//                    followerTimer->stop();
+//                    battleCounter = 0;
+//                    std: string s = followerScreenText->getString();
+//                    s += "\nA brave soul returns to the void. Follower Lost.";
+//                    followerScreenText->setString(s, true);
+//                    getActiveCharacter()->removeFollower();
+//                    battleCounter++;
+//                    death = true;
+//                    std::cout << "THIS IT THE FOLLOWE DIES" << std::endl;
+//                    ///return;
+//                }
+//            }   ///ND IF TICKS < timetoAdventure
+//            else{       ///TIME RAN OUT (BattleCounter
+//
+//                    ///EXIT BATTLE
+//                    //battleCounter++;
+//                    battleThreadRunning.store(false);
+//                    battleFinished = true;
+//                    followerTimer->stop();
+//                    std::string s = "";
+//                    if(followerScreenText->getString() != ""){
+//
+//                        s = followerScreenText->getString();
+//                    }
+//                    std::string msg = "\nTime ran out. Your follower won " + std::to_string(battleCounter);
+//                    msg += (battleCounter == 1) ? " battle" : " battles!";
+////                    if(battleCounter == 0){
+////
+////                        msg += " Try using EXP potions to level the follower!";
+////                    }
+//                    s += msg;
+//                    followerScreenText->setString(s, true);
+//                    //HITS AFTER FOLLOWER DIES...
+//                    std::cout << "TIME RAN OUT: BROKE FIRST LOOP" << std::endl;
+//                    battleCounter = 0;
+//                }
+//        //HITS HERE WHEN FOLLOWER FIRST DIES>......
+//                loopCounter++;
+//                if (loopCounter == 2) {
+//
+//                    int check = 0;
+//                }
+//                std::cout << std::to_string(loopCounter) << " LOOP OF BATTLETHREADRUNNING!" << std::endl;
+//            //}
+//        }
+//
+//        std::cout << "EXITING BATTLE THREAD" << std::endl;
+//        followerTimer->stop();
+//}
 
 void StateData::clearCharacters(){
 

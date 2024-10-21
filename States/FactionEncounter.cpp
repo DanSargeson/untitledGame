@@ -28,7 +28,7 @@ FactionEncounter::FactionEncounter(int faction){
     npc = std::make_shared<NPC>(1, faction); // TODO:: NEED TO FIX THIS
     file = std::make_shared<LoadFiles>(m_fileName, 1);
 
-    npc->createDialogueComponent();
+//    npc->createDialogueComponent();
     npc->createFactionComponent();
     file->readJsonFile2(json_file);
    // std::pair msg1 = file->getDialogueAndResponses(npc->getFactionStr(), 1, 0);

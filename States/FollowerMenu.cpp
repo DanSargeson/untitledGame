@@ -261,7 +261,7 @@ void FollowerMenu::runMenuSelection(){
 
      //INV MENU2 STARTS HERE
 
-        std::lock_guard<std::mutex> lock(StateData::GetInstance()->mtx);
+        //std::lock_guard<std::mutex> lock(StateData::GetInstance()->mtx);
         if(invMenu2->getActive() && invMenu2->isSelected()){
             std::cout << "CHOICE: " << choice << std::endl;
             ///auto wv = StateData::GetInstance()->getActiveCharacter()->findItem(choice);
@@ -496,10 +496,10 @@ void FollowerMenu::updateEvents(SDL_Event& e){
 
         if(battleButton->isPressed(e.button)){
 
-            if(!getData()->battleThreadRunning){
+            if(!getData()->battleThreadRunning.load()){
 
                 getData()->followerTimer->restart();
-                getData()->startBattleThread();
+                getData()->battleThreadStart.store(true);
             }
         }
     }

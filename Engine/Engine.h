@@ -64,8 +64,6 @@ private:
         std::vector<std::shared_ptr<class State>> mStates;
         int currentState;
 //        GameMap* m_LevelMap;
-
-
 };
 
 #endif // ENGINE_H

@@ -1,5 +1,7 @@
 #include "QuestComponent.h"
 
+///TODO - THIS ENTIRE THING IS UNSUED CURRENTLY...
+
 QuestComponent::QuestComponent(std::shared_ptr<Entity> owner) : Component(owner){
 
 

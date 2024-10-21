@@ -13,12 +13,6 @@ SkillComponent::SkillComponent(std::shared_ptr<Entity> owner) : Component(owner)
 
 
 	Possibly reblance.
-
-
-
-
-
-
 	*/
 	mSkills.push_back(Skill(SKILLS::MELEE));			//UNARMED AND MELEE WEAPONS
 	mSkills.push_back(Skill(SKILLS::CRIT));			//CRIT CHANCE
@@ -37,35 +31,6 @@ SkillComponent::~SkillComponent(){
 
 
 }
-
-
-///int SkillComponent::calculateSkillsNEW(std::string attribute_name, int currAttribute){
-///
-///    /// Assume each attribute has a weight that determines its impact on the skill
-///
-///    int base_skill_value = 50;
-////
-///    std::unordered_map<std::string, double> attribute_weight = {
-///            {"Vitality", 10},
-///            {"Strength", 20},
-///            {"Dexterity", 20},
-///            {"Agility", 20},
-///            {"Intelligence", 20},
-///            {"Charisma", 20},
-///            {"Luck", 10}
-///        };
-///
-///        /// Calculate the modified skill value based on the attribute's influence
-///        double modified_skill_value = base_skill_value + (currAttribute * attribute_weight[attribute_name]);
-///
-///        /// Ensure the modified skill value stays within a reasonable range (e.g., 1 to 100)
-///        modified_skill_value = std::max(1.0, std::min(100.0, modified_skill_value));
-///
-///
-///        std::cout << attribute_name << " : " << std::to_string(modified_skill_value);
-///
-///        return static_cast<int>(modified_skill_value);
-///}
 
 int SkillComponent::getSkill(const unsigned int skill) {
 
@@ -356,30 +321,7 @@ void SkillComponent::calculateSkills(std::shared_ptr<AttributeComponent> ac) {
 
 
 
-        /// Calculate the modified skill value based on the attribute's influence
-///        double modified_skill_value = base_skill_value + (currAttribute * attribute_weight[attribute_name]);
-
-        /// Ensure the modified skill value stays within a reasonable range (e.g., 1 to 100)
-///        modified_skill_value = std::max(1.0, std::min(100.0, modified_skill_value));
-
-
-   ///     std::cout << attribute_name << " : " << std::to_string(modified_skill_value);
-
-//     unsigned seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
-//
-//     default_random_engine generator;
-//
-//     generator.seed(seed);
-//
-//     std::uniform_int_distribution<int> skillDist1(1, 5);
-//     int skill1 = skillDist1(generator);
-//
-//     std::uniform_int_distribution<int> skillDist2(2, 4);
-//     int skill2 = skillDist2(generator);
-
      int skillMod = 4;
-
-     ///((mAttributes[VITALITY] * 4) + mLevel  * 10);
 
 	/*
 		LUCK HAS AN AFFECT ON ALL ABILITIES, SLIGHTLY
@@ -449,13 +391,6 @@ void SkillComponent::calculateSkills(std::shared_ptr<AttributeComponent> ac) {
 			WHICH WILL BE AFFECTED BY CHARISMA AND STRENGTH RESPECTIVELY
 
 	*/
-
-	//this->vitality = 0.01f;		//HEALTH + DEFENCE - DONE
-	//this->strength = 0.01f;		//MELEE DMG + CARRY WEIGHT????
-	//this->dexterity = 0.01f;		//STEALTH + LOCKPICKING		- DONE
-	//this->agility = 0.01f;		//RANGED DMG + ACCURACY		- DONE
-	//this->intelligence = 0.01f;	//MAGIC + PERCEPTION		- DONE
-	//this->charisma = 0.10f;		//PERSUASION + MORE MONEY????
 }
 
 

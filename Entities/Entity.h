@@ -6,9 +6,9 @@
 class AttributeComponent;
 class SkillComponent;
 class FactionComponent;
-class DialogueComponent;
+//class DialogueComponent;
 class AttackComponent;
-class QuestComponent;
+//class QuestComponent;
 //DEFENCE COMPONENT HERE
 class Item;
 #include "Inventory.h"
@@ -33,9 +33,9 @@ protected:
 	std::shared_ptr<AttributeComponent> attributeComponent;
 	std::shared_ptr<SkillComponent> skillComponent;
 	std::shared_ptr<FactionComponent> factionComponent;
-	std::shared_ptr<DialogueComponent> dialogueComponent;
+//	std::shared_ptr<DialogueComponent> dialogueComponent;
 	std::shared_ptr<AttackComponent> attackComponent;
-	std::shared_ptr<QuestComponent> questComponent;
+//	std::shared_ptr<QuestComponent> questComponent;
 
 	int faction;
 
@@ -162,14 +162,14 @@ public:
 	void createAttributeComponent(const unsigned level, const bool reset, bool enemy = false);
 	void createSkillComponent();
 	void createFactionComponent();
-	void createDialogueComponent();
+//	void createDialogueComponent();
 	void createAttackComponent();
 	void createQuestComponent();
 
     std::shared_ptr<AttributeComponent> getAttributeComponent() { return this->attributeComponent; }
 	std::shared_ptr<SkillComponent> getSkillComponent() { return skillComponent; };
 	std::shared_ptr<FactionComponent> getFactionComponent() { return factionComponent; }
-	std::shared_ptr<DialogueComponent> getDialogueComponent() { return dialogueComponent; };
+//	std::shared_ptr<DialogueComponent> getDialogueComponent() { return dialogueComponent; };
 	std::shared_ptr<AttackComponent> getAttackComponent() { return attackComponent; }
 
 
@@ -230,10 +230,10 @@ public:
 	void removeComponent(std::shared_ptr<class Component> comp);
 	void updateComponents();
 
-	bool getDialogueActive();
-	void setDialogueActive(bool n);
-	void setDialogueText(std::string);
-	void renderDialogue();
+//	bool getDialogueActive();
+//	void setDialogueActive(bool n);
+//	void setDialogueText(std::string);
+//	void renderDialogue();
 
 	//virtual int getDirection() = 0;
 

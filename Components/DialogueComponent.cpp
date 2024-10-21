@@ -1,5 +1,8 @@
 #include "DialogueComponent.h"
 
+
+///Completely useless for now I believe? Doesn't get called at all as far as I am aware??
+
 DialogueComponent::DialogueComponent(std::shared_ptr<Entity> owner) : Component(owner){
 
     this->text = std::make_unique<GUI::textBox>();

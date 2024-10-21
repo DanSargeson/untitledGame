@@ -17,6 +17,7 @@ Game::Game() : State(){
   ///TODO: Game timer should be loaded in mainMenu....
   ///getData()->getActiveCharacter()->getWorldTimer()->start();
 
+  getData()->battleThreadStart.store(false);
     getData()->initTimeCycle();
     if(!getActiveCharacter()->getWorldTimer()->isStarted()){
 
@@ -92,10 +93,10 @@ Game::~Game(){
 //    getData()->b.reset();
 //    getData()->battleCounter = 0;
 //
-//    if(getData()->battleThread.joinable()){
-//
-//        getData()->battleThread.join();
-//    }
+    if(getData()->battleThreadRunning.load() && battleThread.joinable()){
+
+        battleThread.detach();
+    }
 }
 
 void Game::refreshGUI(){
@@ -126,127 +127,134 @@ void Game::refreshGUI(){
     getDynamicText()->setPosition(GUI::p2pX(55), GUI::p2pY(30));
 }
 
-//void Game::startBattleThread(){
-//
-//    std::lock_guard<std::mutex> lock(mtx);
-//    if(!battleThreadRunning){
-//    b = std::make_shared<Battle>(true);
-//    battleCounter = 0;
-//    battleThreadRunning.store(true);
-//    battleThread = std::thread(&Game::runFollowerBattles, this);
-//    }
-//}
-//
-//void Game::runFollowerBattles(){
-//
-//        std::cout << "TOP OF RUN FOLLOWER BATTLE" << std::endl;
-//
-//        bool death = false;
-//        int loopCounter = 0;
-//
-//        while (battleThreadRunning.load()) {
-//
-//
-//                std::unique_lock<std::mutex> lock(mtx);
-//
-//                if(battleThreadPaused.load()){
-//
-//                    followerTimer->pause();
-//                    cv.wait(lock, [this]{return !battleThreadPaused.load();});
-//                    followerTimer->unpause();
-//                }
-//
-//
-//                ///Replaces the sleep_for functionality...
-//                if(cv.wait_for(lock, std::chrono::milliseconds(1000), [this] { return !battleThreadRunning; })){
-//                    break;
-//                }
-//        bool battleFinished = false;
-//        int timeToAdventure = 120000;  ///2 MINUTES FOR ADVENTURING...
-//
-//        if(followerTimer->getTicks() <= timeToAdventure){  ///
-//
-//        int test = getActiveCharacter()->getActiveFollower()->getLevel();
-//
-//            if(getActiveCharacter()->getActiveFollower()->isAlive()){
-//
-//                    if(b->getEnemies().size() <= 0){
-//
-//                    std::string msg = "Follower defeated all enemies. New battle begins!";
-//                    battleCounter++;
-//                    std::cout << msg << std::endl;
-//                    std::cout << std::to_string(battleCounter) << std::endl;
-//                    if(followerTimer->getTicks() <= timeToAdventure){
-//
-//                        b->spawnEnemies();
-//                    }
-//                }
-//                else{
-//                        if (battleCounter >= 5) {
-//                            battleFinished = true;
-//                            battleThreadRunning.store(false);
-//
-//                            return;
-//                        }
-//                    b->followersAutoBattle();
-//                }
-//            }
-//
-//                if(!getActiveCharacter()->getActiveFollower()->isAlive()){   ///FOLLOWER DIED
-//                    battleThreadRunning.store(false);
-//                    cv.notify_all();
-//                    battleFinished = true;
-//                    followerTimer->stop();
-//                    battleCounter = 0;
-//                    std: string s = getFollowerText()->getString();
-//                    s += "\nA brave soul returns to the void. Follower Lost.";
-//                    getFollowerText()->setString(s, true);
-//                    getActiveCharacter()->removeFollower();
-//                    battleCounter++;
-//                    death = true;
-//                    std::cout << "THIS IT THE FOLLOWE DIES" << std::endl;
-//                    ///return;
-//                }
-//            }   ///ND IF TICKS < timetoAdventure
-//            else{       ///TIME RAN OUT (BattleCounter
-//
-//                    ///EXIT BATTLE
-//                    //battleCounter++;
-//                    battleThreadRunning.store(false);
-//                    battleFinished = true;
-//                    followerTimer->stop();
-//                    std::string s = "";
-//                    if(getFollowerText()->getString() != ""){
-//
-//                        s = getFollowerText()->getString();
-//                    }
-//                    std::string msg = "\nTime ran out. Your follower won " + std::to_string(battleCounter);
-//                    msg += (battleCounter == 1) ? " battle" : " battles!";
-//                    s += msg;
-//                    getFollowerText()->setString(s, true);
-//                    //HITS AFTER FOLLOWER DIES...
-//                    std::cout << "TIME RAN OUT: BROKE FIRST LOOP" << std::endl;
-//                    battleCounter = 0;
-//                }
-//        //HITS HERE WHEN FOLLOWER FIRST DIES>......
-//                loopCounter++;
-//                if (loopCounter == 2) {
-//
-//                    int check = 0;
-//                }
-//                std::cout << std::to_string(loopCounter) << " LOOP OF BATTLETHREADRUNNING!" << std::endl;
-//            //}
-//        }
-//
-//        std::cout << "EXITING BATTLE THREAD" << std::endl;
-//        followerTimer->stop();
-//}
+void Game::startBattleThread(){
+
+    getData()->battleThreadStart.store(false);
+    std::lock_guard<std::mutex> lock(mtx);
+    if(!getData()->battleThreadRunning.load()){
+    b = std::make_shared<Battle>(true);
+    battleCounter = 0;
+    getData()->battleThreadRunning.store(true);
+    battleThread = std::thread(&Game::runFollowerBattles, this);
+    }
+}
+
+void Game::runFollowerBattles(){
+
+        std::cout << "TOP OF RUN FOLLOWER BATTLE" << std::endl;
+
+        bool death = false;
+        int loopCounter = 0;
+
+        while (getData()->battleThreadRunning.load()) {
+
+
+                std::unique_lock<std::mutex> lock(mtx);
+
+                if(getData()->battleThreadPaused.load()){
+
+                    getData()->followerTimer->pause();
+                    cv.wait(lock, [this]{return !getData()->battleThreadPaused.load();});
+                    getData()->followerTimer->unpause();
+                }
+
+
+                ///Replaces the sleep_for functionality...
+                if(cv.wait_for(lock, std::chrono::milliseconds(1000), [this] { return !getData()->battleThreadRunning.load(); })){
+                    break;
+                }
+        bool battleFinished = false;
+        float timeToAdventure = 30000.0f;
+
+        if(getData()->followerTimer->getTicks() <= timeToAdventure){  ///
+
+        int test = getActiveCharacter()->getActiveFollower()->getLevel();
+
+            if(getActiveCharacter()->getActiveFollower()->isAlive()){
+
+                    if(b->getEnemies().size() <= 0){
+
+                    std::string msg = "Follower defeated all enemies. New battle begins!";
+                    battleCounter++;
+                    std::cout << msg << std::endl;
+                    std::cout << std::to_string(battleCounter) << std::endl;
+                    if(getData()->followerTimer->getTicks() <= timeToAdventure){
+
+                        b->spawnEnemies();
+                    }
+                }
+                else{
+                        if (battleCounter >= 5) {
+                            battleFinished = true;
+                            getData()->battleThreadRunning.store(false);
+
+                            return;
+                        }
+                    b->followersAutoBattle();
+                }
+            }
+
+                if(!getActiveCharacter()->getActiveFollower()->isAlive()){   ///FOLLOWER DIED
+                    getData()->battleThreadRunning.store(false);
+                    cv.notify_all();
+                    battleFinished = true;
+                    getData()->followerTimer->stop();
+                    battleCounter = 0;
+                    std: string s = getFollowerText()->getString();
+                    s += "\nA brave soul returns to the void. Follower Lost.";
+                    getFollowerText()->setString(s, true);
+                    getActiveCharacter()->removeFollower();
+                    battleCounter++;
+                    death = true;
+                    std::cout << "THIS IT THE FOLLOWE DIES" << std::endl;
+                    ///return;
+                }
+            }   ///ND IF TICKS < timetoAdventure
+            else{       ///TIME RAN OUT (BattleCounter
+
+                    ///EXIT BATTLE
+                    //battleCounter++;
+                    getData()->battleThreadRunning.store(false);
+                    battleFinished = true;
+                    getData()->followerTimer->stop();
+                    std::string s = "";
+                    if(getFollowerText()->getString() != ""){
+
+                        s = getFollowerText()->getString();
+                    }
+                    std::string msg = "\nTime ran out. Your follower won " + std::to_string(battleCounter);
+                    msg += (battleCounter == 1) ? " battle" : " battles!";
+                    s += msg;
+                    getFollowerText()->setString(s, true);
+                    //HITS AFTER FOLLOWER DIES...
+                    std::cout << "TIME RAN OUT: BROKE FIRST LOOP" << std::endl;
+                    battleCounter = 0;
+                }
+        //HITS HERE WHEN FOLLOWER FIRST DIES>......
+                loopCounter++;
+                if (loopCounter == 2) {
+
+                    int check = 0;
+                }
+                std::cout << std::to_string(loopCounter) << " LOOP OF BATTLETHREADRUNNING!" << std::endl;
+            //}
+        }
+
+        std::cout << "EXITING BATTLE THREAD" << std::endl;
+        //getData()->battleThreadExit.store(true);
+        getData()->followerTimer->stop();
+}
 
 
 void Game::update(const float& dt){
 
     State::update(dt);
     menu->update();
+
+    if(getData()->battleThreadStart.load()){
+
+        startBattleThread();
+    }
 
     if(exitingBattles && getData()->battleThreadRunning.load()){
 
@@ -294,7 +302,7 @@ void Game::update(const float& dt){
 
 
 
-    std::lock_guard<std::mutex> lock(getData()->mtx);
+//    std::lock_guard<std::mutex> lock(getData()->mtx);
     menu->update();
     float timeRemaining = (getData()->followerTimer->getTicks() / 1000.0f);
     std::stringstream ss;
@@ -303,9 +311,9 @@ void Game::update(const float& dt){
     timerText->setString(msg, true);
     if (!getData()->battleThreadRunning.load()) {
 
-        if(getData()->battleThread.joinable()){
+        if(battleThread.joinable()){
 
-            getData()->battleThread.join();
+            battleThread.join();
 
             return;
         }
@@ -358,7 +366,7 @@ void Game::update(const float& dt){
         runTutorial();
     }
 
-    if(textBox->getActive() || testNpc->getDialogueActive()){
+    if(textBox->getActive()){
 
         menu->setActive(false);
     }
@@ -574,7 +582,7 @@ void Game::runMenuSelection(){
             if(menu->getChoice() == 3){
 
                 confirmationBox->setActive(true);
-                std::lock_guard<std::mutex> lock(getData()->mtx);
+//                std::lock_guard<std::mutex> lock(getData()->mtx);
                 getData()->battleThreadPaused.store(true);
             }
         }
@@ -625,12 +633,12 @@ void Game::updateEvents(SDL_Event& e){
 
             //confirmationBox->setConfirm(false);
             //confirmationBox->setActive(false);
-            if(getData()->battleThreadRunning.load() && getData()->battleThread.joinable()){
-                std::lock_guard<std::mutex> lock(getData()->mtx);
+            if(getData()->battleThreadRunning.load() && battleThread.joinable()){
+//                std::lock_guard<std::mutex> lock(getData()->mtx);
                 if(getData()->battleThreadPaused.load()){
 
                     getData()->battleThreadPaused.store(false);
-                    getData()->cv.notify_all();
+                    cv.notify_all();
                 }
                 getEnemyText()->setString("Exiting follower battles!");
                 exitingBattles = true;
@@ -646,10 +654,10 @@ void Game::updateEvents(SDL_Event& e){
             }
             else{
 
-                if(getData()->battleThreadRunning.load() && getData()->battleThread.joinable()){
+                if(getData()->battleThreadRunning.load() && battleThread.joinable()){
 
                     getData()->battleThreadRunning.store(false);
-                    getData()->battleThread.detach();
+                    battleThread.detach();
                     exitingBattles = false;
 
                     confirmationBox->setChoice(false);
@@ -665,9 +673,9 @@ void Game::updateEvents(SDL_Event& e){
 
                 if(getData()->battleThreadPaused.load()){
 
-                    std::lock_guard<std::mutex> lock(getData()->mtx);
+//                    std::lock_guard<std::mutex> lock(getData()->mtx);
                     getData()->battleThreadPaused.store(false);
-                    getData()->cv.notify_all();
+                    cv.notify_all();
                 }
             }
             else{
@@ -882,10 +890,10 @@ void Game::updateEvents(SDL_Event& e){
 
 
 
-        if(testNpc->getDialogueActive()){
-
-            testNpc->setDialogueActive(false);
-        }
+//        if(testNpc->getDialogueActive()){
+//
+//            testNpc->setDialogueActive(false);
+//        }
 
 
         if(!menu->getActive()){
@@ -1023,10 +1031,10 @@ void Game::render(){
 
 ///    followerTimer->tick();
 
-    if(testNpc->getDialogueActive()){
-
-        testNpc->renderDialogue();
-    }
+//    if(testNpc->getDialogueActive()){
+//
+//        testNpc->renderDialogue();
+//    }
 
 
     if(confirmationBox->getActive()){

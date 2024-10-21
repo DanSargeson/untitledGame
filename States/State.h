@@ -62,17 +62,15 @@ public:
         }
     }
 
-    void startBattleThread();
     void initTimeCycle();
-    std::shared_ptr<class Battle> b;
 
     std::shared_ptr<GameTimer> followerTimer;
 //    std::shared_ptr<GameTimer> worldTimer;
 //    int daysPassed;
     bool prevDay;
-    int battleCounter;
 
-     void runFollowerBattles();
+
+    // void runFollowerBattles();
      void startFollowerAction();
 
      float cycleTime;
@@ -83,12 +81,9 @@ public:
      bool isDay;
      float timeScale = 1.0f;
 
-
     static std::atomic<bool> battleThreadRunning;
     static std::atomic<bool> battleThreadPaused;
-    std::thread battleThread;
-    std::mutex mtx;
-    std::condition_variable cv;
+    static std::atomic<bool> battleThreadStart;
 
 
     //TO BE DETERMINED
@@ -178,6 +173,8 @@ public:
     virtual void refreshGUI();
     void initButtons();
     StateData* getData() { return StateData::GetInstance(); }
+
+    virtual void startBattleThread(){};
 
     std::shared_ptr<GUI::Text> getMainText() { return getData()->mainText; }
     std::shared_ptr<GUI::Text> getDynamicText() { return getData()->dynamicText; }

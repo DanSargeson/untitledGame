@@ -146,19 +146,11 @@ void AttributeComponent::increaseAttribute(int attr){
 	default:
 		break;
 	}
-
-//	for (int i = 0; i < TOTAL_ATTRIBUTES; i++) {
-//
-//		if (mAttributes[i] >= 10) {
-//
-//			mAttributes[i] = 10;
-//		}
-//	}
 }
 
 void AttributeComponent::decreaseAttribute(int attr){
 
-
+    ///Never used, but could be
 	switch (attr) {
 
 	case ATTRIBUTE::AGILITY:
@@ -216,8 +208,6 @@ void AttributeComponent::loadAttribute(int level, float xp, int hp, int vit, int
 
 	updateLevel();
 	updateStats(true);
-
-	//mHp = hp;
 }
 
 void AttributeComponent::removeBonuses(int type/*, int level*/){
@@ -372,6 +362,7 @@ void AttributeComponent::loseHP(const int hp){
 
 void AttributeComponent::calculateNextEXP()
 {
+    ///DOES NOTHING?? TODO
 }
 
 void AttributeComponent::updateStats(const bool reset){
@@ -428,10 +419,9 @@ void AttributeComponent::update(){
 
 void AttributeComponent::assignRandomAttributes(int level, bool npc){
 
+    ///Used for enemies and NPCS (In theory)
     unsigned seed = static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count());
-		std::default_random_engine generator(seed);
-//		std::uniform_int_distribution<int> levelDistribution(low, high);
-
+    std::default_random_engine generator(seed);
         int point = 3;
 		///int counter = 0;
 		if(level > 1){
@@ -501,7 +491,7 @@ void AttributeComponent::assignRandomAttributes(int level, bool npc){
 
             std::uniform_int_distribution<int> pointDistribution(0, 2);
 
-            ///NPC HERE..
+            ///NPC HERE.. TODO Check this
 
             for (int i = 0; i < point; i++) {
 
@@ -533,18 +523,6 @@ void AttributeComponent::assignRandomAttributes(int level, bool npc){
                 }
             }
 		}
-}
-
-std::string AttributeComponent::debugPrint(){
-
-	std::stringstream ss;
-
-	ss << "Level: " << mLevel << "\n"
-		<< "EXP: " << mExp << "\n"
-		<< "EXP Required: " << mExpNext << "\n"
-		<< "Points to spend: " << mAttributePoints << "\n";
-
-	return  ss.str();
 }
 
 int AttributeComponent::getAttribute(const int attr){

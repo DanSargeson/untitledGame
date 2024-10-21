@@ -1,5 +1,9 @@
 #include "Camera.h"
 
+
+///TODO: Camera needs reworking alongside tilemap..
+
+
 /*
 Camera::Camera(){
 

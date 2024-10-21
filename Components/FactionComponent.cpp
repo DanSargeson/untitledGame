@@ -52,6 +52,7 @@ int FactionComponent::getReputation(unsigned int faction){
 
 void FactionComponent::calculateReputation(int faction) {
 
+    //TODO - Check if this is ever used
 
 	unsigned seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
@@ -140,44 +141,6 @@ void FactionComponent::loseRep(int faction, int rep){
 void FactionComponent::gainRep(int faction, int rep) {
 
 	mFactions[faction].gainRep(rep);
-
-        ///RED HATE BLUE HATE GREEN HATE RED
-        ///if red > 255
-        /// GREEN will be lowered
-        /// /RED + GREEN == YELLOW (peacemakers)
-
-        ///if BLUE > 255
-        /// red will be lowered
-        /// / red + blue == BLUE (peacemakers)
-
-        ///If GREEN >  255
-        /// blue will be lowered
-        /// / green + blue == AQUA (peacemakers)
-
-//        float lose = static_cast<float>(rep) / 4;
-//
-//        lose = std::round(lose);
-//
-//        if(lose <= 0){
-//
-//            lose = 1;
-//        }
-//
-//
-//	switch(faction){
-//
-//    case FACTIONS::RED:     ///RED FACTION HATE BLUE AND ARE SUSPICIOUS OF GREEN
-//        mFactions[FACTIONS::GREEN].loseRep(lose);
-//        break;
-//
-//    case FACTIONS::BLUE:
-//        mFactions[FACTIONS::RED].loseRep(lose);
-//        break;
-//
-//    case FACTIONS::GREEN:
-//        mFactions[FACTIONS::BLUE].loseRep(lose);
-//        break;
-//	}
 }
 
 std::string FactionComponent::getFactionName(int faction) {
@@ -186,6 +149,8 @@ std::string FactionComponent::getFactionName(int faction) {
 }
 
 std::string FactionComponent::getFactionsStr() {
+
+///TODO - Rename this awfully named function
 
 	std::string msg;
 
@@ -225,14 +190,6 @@ std::string FactionComponent::getFactionsStr() {
 		}
 
 		int rep = mFactions[i].getRepLevel() - 100;
-//		if(rep < -255){
-//
-//            rep = -255;
-//		}
-//		if(rep > 255){
-//
-//            rep = 255;
-//		}
 
 		msg += "  (" + std::to_string(rep) + ")\n";
 	}

@@ -41,7 +41,7 @@ void Entity::InitVariables(){
 
 	this->attributeComponent = NULL;
 	this->skillComponent = NULL;
-	this->dialogueComponent = NULL;
+//	this->dialogueComponent = NULL;
 	this->factionComponent = NULL;
 }
 
@@ -511,13 +511,13 @@ void Entity::createFactionComponent(){
 
 void Entity::createQuestComponent(){
 
-    this->questComponent = std::make_shared<QuestComponent>(getPtr());
+//    this->questComponent = std::make_shared<QuestComponent>(getPtr());
 }
 
-void Entity::createDialogueComponent(){
-
-	this->dialogueComponent = std::make_shared<DialogueComponent>(getPtr());
-}
+//void Entity::createDialogueComponent(){
+//
+//	this->dialogueComponent = std::make_shared<DialogueComponent>(getPtr());
+//}
 
 void Entity::createAttackComponent(){
 
@@ -1079,50 +1079,50 @@ void Entity::update(){
 
 }
 
-bool Entity::getDialogueActive(){
+//bool Entity::getDialogueActive(){
+//
+//    if(dialogueComponent != nullptr){
+//
+//        return dialogueComponent->getTextBoxActive();
+//    }
+//    else{
+//
+//        return false;
+//    }
+//}
 
-    if(dialogueComponent != nullptr){
-
-        return dialogueComponent->getTextBoxActive();
-    }
-    else{
-
-        return false;
-    }
-}
-
-void Entity::setDialogueActive(bool n){
-
-    if(dialogueComponent){
-
-        dialogueComponent->setTextBoxActive(n);
-    }
-}
-
-void Entity::setDialogueText(std::string txt){
-
-    dialogueComponent->setDialogueText(txt);
-}
+//void Entity::setDialogueActive(bool n){
+//
+//    if(dialogueComponent){
+//
+//        dialogueComponent->setTextBoxActive(n);
+//    }
+//}
+//
+//void Entity::setDialogueText(std::string txt){
+//
+//    dialogueComponent->setDialogueText(txt);
+//}
 
 void Entity::setCharacterName(std::string name){
 
     m_name = name;
 
-    if(dialogueComponent != nullptr){
-
-        dialogueComponent->setHeader(m_name);
-    }
+//    if(dialogueComponent != nullptr){
+//
+//        dialogueComponent->setHeader(m_name);
+//    }
 }
 
 
 
-void Entity::renderDialogue(){
-
-    if(dialogueComponent->getTextBoxActive()){
-
-        dialogueComponent->render();
-    }
-}
+//void Entity::renderDialogue(){
+//
+//    if(dialogueComponent->getTextBoxActive()){
+//
+//        dialogueComponent->render();
+//    }
+//}
 
 
 void Entity::render(){

@@ -63,7 +63,7 @@ public:
 	inline bool levelUp() { return mHasLevelled; }
 	inline void turnLevelOff() { mHasLevelled = false; }
 
-	std::string debugPrint();
+//	std::string debugPrint();
 
 	int getAttribute(const int attr);
 
